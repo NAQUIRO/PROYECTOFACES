@@ -7,28 +7,56 @@
   
   <persistence-unit name="bdjpa" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    
+    <!-- Excluir clases no listadas para evitar escaneo automático -->
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
     <properties>
-      <!-- CONEXIÓN JDBC -->
+      <!-- ========================================
+           CONEXIÓN JDBC
+           ======================================== -->
       <property name="jakarta.persistence.jdbc.url" 
                 value="jdbc:mysql://127.0.0.1:3306/dbprueba?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=America/Lima&amp;characterEncoding=utf8mb4"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       
-      <!-- HIBERNATE CONFIG -->
+      <!-- ========================================
+           HIBERNATE CONFIGURATION
+           ======================================== -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <!-- Evita el uso del transformador de bytecode de Hibernate que estaba provocando errores ClassCircularityError -->
+      <property name="hibernate.use_sql_comments" value="true"/>
+      
+      <!-- ========================================
+           CRÍTICO: DESHABILITAR BYTECODE ENHANCEMENT
+           Evita ClassCircularityError en Payara
+           ======================================== -->
       <property name="hibernate.bytecode.provider" value="none"/>
+      <property name="hibernate.enhancer.enableDirtyTracking" value="false"/>
+      <property name="hibernate.enhancer.enableLazyInitialization" value="false"/>
+      <property name="hibernate.enhancer.enableAssociationManagement" value="false"/>
+      
+      <!-- ========================================
+           SCHEMA MANAGEMENT
+           ======================================== -->
       <property name="hibernate.hbm2ddl.auto" value="none"/>
       
-      <!-- POOL C3P0 -->
+      <!-- ========================================
+           CONNECTION POOL (C3P0)
+           ======================================== -->
       <property name="hibernate.c3p0.min_size" value="5"/>
       <property name="hibernate.c3p0.max_size" value="20"/>
       <property name="hibernate.c3p0.timeout" value="300"/>
+      <property name="hibernate.c3p0.max_statements" value="50"/>
+      <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+      
+      <!-- ========================================
+           LOGGING Y ESTADÍSTICAS
+           ======================================== -->
+      <property name="hibernate.generate_statistics" value="false"/>
+      <property name="hibernate.use_sql_comments" value="false"/>
     </properties>
   </persistence-unit>
 </persistence>
