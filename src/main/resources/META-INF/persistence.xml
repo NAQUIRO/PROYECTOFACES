@@ -12,7 +12,7 @@
 
     <properties>
       <property name="jakarta.persistence.jdbc.url" 
-                value="jdbc:mysql://127.0.0.1:3306/dbprueba?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=America/Lima&amp;characterEncoding=utf8mb4"/>
+                value="jdbc:mysql://127.0.0.1:3306/dbprueba?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=America/Lima&amp;characterEncoding=UTF-8"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
