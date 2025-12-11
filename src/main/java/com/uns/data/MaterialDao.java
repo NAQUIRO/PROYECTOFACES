@@ -34,10 +34,7 @@ public class MaterialDao extends JPA implements DAO<Material> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT m FROM Material m " +
-                                "LEFT JOIN FETCH m.grupo " +
-                                "LEFT JOIN FETCH m.unidad " +
-                                "ORDER BY m.id DESC",
+                        "SELECT m FROM Material m ORDER BY m.id DESC",
                         Material.class)
                         .getResultList();
             } catch (Exception e) {
@@ -51,11 +48,7 @@ public class MaterialDao extends JPA implements DAO<Material> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT m FROM Material m " +
-                                "LEFT JOIN FETCH m.grupo " +
-                                "LEFT JOIN FETCH m.unidad " +
-                                "WHERE m.estado = 'Activo' " +
-                                "ORDER BY m.nombre",
+                        "SELECT m FROM Material m WHERE m.estado = 'Activo' ORDER BY m.nombre",
                         Material.class)
                         .getResultList();
             } catch (Exception e) {

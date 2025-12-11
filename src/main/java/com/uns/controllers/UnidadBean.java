@@ -2,7 +2,7 @@ package com.uns.controllers;
 
 import com.uns.data.UnidadDao;
 import com.uns.entities.Unidad;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("unidadBean")
-@RequestScoped
+@SessionScoped
 public class UnidadBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,21 +34,23 @@ public class UnidadBean implements Serializable {
 
     public List<Unidad> getAll() {
         try {
-            return unidadDao.getAll();
+            List<Unidad> result = unidadDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener unidades: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las unidades");
-            return null;
+            return List.of();
         }
     }
 
     public List<Unidad> getAllActivos() {
         try {
-            return unidadDao.getAllActivos();
+            List<Unidad> result = unidadDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener unidades activas: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las unidades activas");
-            return null;
+            return List.of();
         }
     }
 

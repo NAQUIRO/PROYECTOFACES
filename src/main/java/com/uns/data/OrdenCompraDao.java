@@ -34,10 +34,7 @@ public class OrdenCompraDao extends JPA implements DAO<Orden_compra> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT o FROM Orden_compra o " +
-                                "LEFT JOIN FETCH o.proveedor " +
-                                "LEFT JOIN FETCH o.solicitante " +
-                                "ORDER BY o.id DESC",
+                        "SELECT o FROM Orden_compra o ORDER BY o.id DESC",
                         Orden_compra.class)
                         .getResultList();
             } catch (Exception e) {
@@ -51,11 +48,7 @@ public class OrdenCompraDao extends JPA implements DAO<Orden_compra> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT o FROM Orden_compra o " +
-                                "LEFT JOIN FETCH o.proveedor " +
-                                "LEFT JOIN FETCH o.solicitante " +
-                                "WHERE o.estado = :estado " +
-                                "ORDER BY o.fecha DESC",
+                        "SELECT o FROM Orden_compra o WHERE o.estado = :estado ORDER BY o.fecha DESC",
                         Orden_compra.class)
                         .setParameter("estado", estado)
                         .getResultList();

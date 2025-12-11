@@ -34,11 +34,7 @@ public class DetalleRequerimientoDao extends JPA implements DAO<Detalle_requerim
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT d FROM Detalle_requerimiento d " +
-                                "LEFT JOIN FETCH d.requerimiento " +
-                                "LEFT JOIN FETCH d.material " +
-                                "LEFT JOIN FETCH d.unidad " +
-                                "ORDER BY d.id DESC",
+                        "SELECT d FROM Detalle_requerimiento d ORDER BY d.id DESC",
                         Detalle_requerimiento.class)
                         .getResultList();
             } catch (Exception e) {
@@ -52,11 +48,7 @@ public class DetalleRequerimientoDao extends JPA implements DAO<Detalle_requerim
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT d FROM Detalle_requerimiento d " +
-                                "LEFT JOIN FETCH d.material " +
-                                "LEFT JOIN FETCH d.unidad " +
-                                "WHERE d.requerimiento.id = :requerimientoId " +
-                                "ORDER BY d.id",
+                        "SELECT d FROM Detalle_requerimiento d WHERE d.requerimiento.id = :requerimientoId ORDER BY d.id",
                         Detalle_requerimiento.class)
                         .setParameter("requerimientoId", requerimientoId)
                         .getResultList();
@@ -71,12 +63,7 @@ public class DetalleRequerimientoDao extends JPA implements DAO<Detalle_requerim
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT d FROM Detalle_requerimiento d " +
-                                "LEFT JOIN FETCH d.requerimiento " +
-                                "LEFT JOIN FETCH d.material " +
-                                "LEFT JOIN FETCH d.unidad " +
-                                "WHERE d.estado = :estado " +
-                                "ORDER BY d.id DESC",
+                        "SELECT d FROM Detalle_requerimiento d WHERE d.estado = :estado ORDER BY d.id DESC",
                         Detalle_requerimiento.class)
                         .setParameter("estado", estado)
                         .getResultList();
@@ -92,12 +79,7 @@ public class DetalleRequerimientoDao extends JPA implements DAO<Detalle_requerim
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT d FROM Detalle_requerimiento d " +
-                                "LEFT JOIN FETCH d.material " +
-                                "LEFT JOIN FETCH d.unidad " +
-                                "WHERE d.requerimiento.id = :requerimientoId " +
-                                "AND d.estado = 'Pendiente' " +
-                                "ORDER BY d.id",
+                        "SELECT d FROM Detalle_requerimiento d WHERE d.requerimiento.id = :requerimientoId AND d.estado = 'Pendiente' ORDER BY d.id",
                         Detalle_requerimiento.class)
                         .setParameter("requerimientoId", requerimientoId)
                         .getResultList();

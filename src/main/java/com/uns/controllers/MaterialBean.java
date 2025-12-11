@@ -6,7 +6,7 @@ import com.uns.data.UnidadDao;
 import com.uns.entities.Material;
 import com.uns.entities.Grupo;
 import com.uns.entities.Unidad;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Named("materialBean")
-@RequestScoped
+@SessionScoped
 public class MaterialBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,31 +63,34 @@ public class MaterialBean implements Serializable {
 
     public List<Material> getAll() {
         try {
-            return materialDao.getAll();
+            List<Material> result = materialDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener materiales: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los materiales");
-            return null;
+            return List.of();
         }
     }
 
     public List<Grupo> getAllGrupos() {
         try {
-            return grupoDao.getAllActivos();
+            List<Grupo> result = grupoDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener grupos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los grupos");
-            return null;
+            return List.of();
         }
     }
 
     public List<Unidad> getAllUnidades() {
         try {
-            return unidadDao.getAllActivos();
+            List<Unidad> result = unidadDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener unidades: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las unidades");
-            return null;
+            return List.of();
         }
     }
 

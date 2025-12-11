@@ -34,12 +34,7 @@ public class RequerimientoDao extends JPA implements DAO<Requerimiento> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT r FROM Requerimiento r " +
-                                "LEFT JOIN FETCH r.solicitante " +
-                                "LEFT JOIN FETCH r.proyecto " +
-                                "LEFT JOIN FETCH r.area " +
-                                "LEFT JOIN FETCH r.centroCosto " +
-                                "ORDER BY r.id DESC",
+                        "SELECT r FROM Requerimiento r ORDER BY r.id DESC",
                         Requerimiento.class)
                         .getResultList();
             } catch (Exception e) {
@@ -53,11 +48,7 @@ public class RequerimientoDao extends JPA implements DAO<Requerimiento> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT r FROM Requerimiento r " +
-                                "LEFT JOIN FETCH r.solicitante " +
-                                "LEFT JOIN FETCH r.proyecto " +
-                                "WHERE r.estado = :estado " +
-                                "ORDER BY r.fechaSolicitud DESC",
+                        "SELECT r FROM Requerimiento r WHERE r.estado = :estado ORDER BY r.fechaSolicitud DESC",
                         Requerimiento.class)
                         .setParameter("estado", estado)
                         .getResultList();

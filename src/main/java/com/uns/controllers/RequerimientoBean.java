@@ -160,7 +160,11 @@ public class RequerimientoBean implements Serializable {
     // Métodos de consulta
     public List<Requerimiento> getAll() {
         try {
-            return requerimientoDao.getAll();
+            List<Requerimiento> result = requerimientoDao.getAll();
+            if (result == null || result.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return result;
         } catch (Exception e) {
             addErrorMessage("Error al obtener requerimientos: " + e.getMessage());
             return new ArrayList<>();

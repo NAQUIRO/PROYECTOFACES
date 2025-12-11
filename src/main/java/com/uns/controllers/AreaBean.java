@@ -4,7 +4,7 @@ import com.uns.data.AreaDao;
 import com.uns.data.CentroCostoDao;
 import com.uns.entities.Area;
 import com.uns.entities.Centro_costo;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("areaBean")
-@RequestScoped
+@SessionScoped
 public class AreaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,31 +48,34 @@ public class AreaBean implements Serializable {
 
     public List<Area> getAll() {
         try {
-            return areaDao.getAll();
+            List<Area> result = areaDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener áreas: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las áreas");
-            return null;
+            return List.of();
         }
     }
 
     public List<Area> getAllActivos() {
         try {
-            return areaDao.getAllActivos();
+            List<Area> result = areaDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener áreas activas: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las áreas activas");
-            return null;
+            return List.of();
         }
     }
 
     public List<Centro_costo> getAllCentrosCosto() {
         try {
-            return centroCostoDao.getAllActivos();
+            List<Centro_costo> result = centroCostoDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener centros de costo: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los centros de costo");
-            return null;
+            return List.of();
         }
     }
 

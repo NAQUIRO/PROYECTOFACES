@@ -23,10 +23,7 @@ public class UsuarioDao extends JPA implements DAO<Usuario> {
             try {
                 logger.debug("Buscando usuario con username: {}", username);
                 Usuario result = em.createQuery(
-                        "SELECT u FROM Usuario u " +
-                                "LEFT JOIN FETCH u.rol " +
-                                "LEFT JOIN FETCH u.area " +
-                                "WHERE u.username = :username",
+                        "SELECT u FROM Usuario u WHERE u.username = :username",
                         Usuario.class)
                         .setParameter("username", username)
                         .getSingleResult();
@@ -74,10 +71,7 @@ public class UsuarioDao extends JPA implements DAO<Usuario> {
             try {
                 logger.debug("Obteniendo todos los usuarios");
                 return em.createQuery(
-                        "SELECT u FROM Usuario u " +
-                                "LEFT JOIN FETCH u.rol " +
-                                "LEFT JOIN FETCH u.area " +
-                                "ORDER BY u.id DESC",
+                        "SELECT u FROM Usuario u ORDER BY u.id DESC",
                         Usuario.class)
                         .getResultList();
             } catch (Exception e) {

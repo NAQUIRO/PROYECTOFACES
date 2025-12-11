@@ -2,14 +2,14 @@ package com.uns.controllers;
 
 import com.uns.data.ProveedorDao;
 import com.uns.entities.Proveedor;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("proveedorBean")
-@RequestScoped
+@SessionScoped
 public class ProveedorBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,10 +29,11 @@ public class ProveedorBean implements Serializable {
 
     public List<Proveedor> getAll() {
         try {
-            return proveedorDao.getAll();
+            List<Proveedor> result = proveedorDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return List.of();
         }
     }
 

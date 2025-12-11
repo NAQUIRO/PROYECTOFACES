@@ -2,7 +2,7 @@ package com.uns.controllers;
 
 import com.uns.data.RolDao;
 import com.uns.entities.Rol;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("rolBean")
-@RequestScoped
+@SessionScoped
 public class RolBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,21 +34,23 @@ public class RolBean implements Serializable {
 
     public List<Rol> getAll() {
         try {
-            return rolDao.getAll();
+            List<Rol> result = rolDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener roles: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los roles");
-            return null;
+            return List.of();
         }
     }
 
     public List<Rol> getAllActivos() {
         try {
-            return rolDao.getAll(); // RolDao no tiene getAllActivos, usa getAll
+            List<Rol> result = rolDao.getAll(); // RolDao no tiene getAllActivos, usa getAll
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener roles activos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los roles activos");
-            return null;
+            return List.of();
         }
     }
 

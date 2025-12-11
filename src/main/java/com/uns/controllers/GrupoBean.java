@@ -2,14 +2,14 @@ package com.uns.controllers;
 
 import com.uns.data.GrupoDao;
 import com.uns.entities.Grupo;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named("grupoBean")
-@RequestScoped
+@SessionScoped
 public class GrupoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,19 +29,21 @@ public class GrupoBean implements Serializable {
 
     public List<Grupo> getAll() {
         try {
-            return grupoDao.getAll();
+            List<Grupo> result = grupoDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return List.of();
         }
     }
 
     public List<Grupo> getAllActivos() {
         try {
-            return grupoDao.getAllActivos();
+            List<Grupo> result = grupoDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return List.of();
         }
     }
 

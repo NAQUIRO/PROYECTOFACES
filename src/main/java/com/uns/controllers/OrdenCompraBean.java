@@ -123,7 +123,11 @@ public class OrdenCompraBean implements Serializable {
     // Métodos de consulta
     public List<Orden_compra> getAll() {
         try {
-            return ordenCompraDao.getAll();
+            List<Orden_compra> result = ordenCompraDao.getAll();
+            if (result == null || result.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return result;
         } catch (Exception e) {
             addErrorMessage("Error al obtener órdenes de compra: " + e.getMessage());
             return new ArrayList<>();

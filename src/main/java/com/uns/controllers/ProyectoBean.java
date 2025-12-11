@@ -4,7 +4,7 @@ import com.uns.data.ProyectoDao;
 import com.uns.data.AreaDao;
 import com.uns.entities.Proyecto;
 import com.uns.entities.Area;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("proyectoBean")
-@RequestScoped
+@SessionScoped
 public class ProyectoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,31 +48,34 @@ public class ProyectoBean implements Serializable {
 
     public List<Proyecto> getAll() {
         try {
-            return proyectoDao.getAll();
+            List<Proyecto> result = proyectoDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener proyectos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los proyectos");
-            return null;
+            return List.of();
         }
     }
 
     public List<Proyecto> getAllActivos() {
         try {
-            return proyectoDao.getAllActivos();
+            List<Proyecto> result = proyectoDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener proyectos activos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los proyectos activos");
-            return null;
+            return List.of();
         }
     }
 
     public List<Area> getAllAreas() {
         try {
-            return areaDao.getAllActivos();
+            List<Area> result = areaDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener áreas: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las áreas");
-            return null;
+            return List.of();
         }
     }
 

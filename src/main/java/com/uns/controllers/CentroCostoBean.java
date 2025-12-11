@@ -2,7 +2,7 @@ package com.uns.controllers;
 
 import com.uns.data.CentroCostoDao;
 import com.uns.entities.Centro_costo;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("centroCostoBean")
-@RequestScoped
+@SessionScoped
 public class CentroCostoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,21 +34,23 @@ public class CentroCostoBean implements Serializable {
 
     public List<Centro_costo> getAll() {
         try {
-            return centroCostoDao.getAll();
+            List<Centro_costo> result = centroCostoDao.getAll();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener centros de costo: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los centros de costo");
-            return null;
+            return List.of();
         }
     }
 
     public List<Centro_costo> getAllActivos() {
         try {
-            return centroCostoDao.getAllActivos();
+            List<Centro_costo> result = centroCostoDao.getAllActivos();
+            return result != null ? result : List.of();
         } catch (Exception e) {
             logger.error("Error al obtener centros de costo activos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los centros de costo activos");
-            return null;
+            return List.of();
         }
     }
 

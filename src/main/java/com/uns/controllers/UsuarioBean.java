@@ -6,7 +6,7 @@ import com.uns.data.AreaDao;
 import com.uns.entities.Usuario;
 import com.uns.entities.Rol;
 import com.uns.entities.Area;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named("usuarioBean")
-@RequestScoped
+@SessionScoped
 public class UsuarioBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
