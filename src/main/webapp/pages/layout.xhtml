@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Sistema de Gestión</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body class="layout-shell">
+    <f:event type="preRenderView" listener="#{authBean.requireLogin}"/>
+    <div class="glow-orb"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="header-bar">
+        <div class="branding">
+            <div class="brand-icon">SG</div>
+            <div class="brand-text">Sistema de Compras</div>
+        </div>
+        <div class="toolbar-actions">
+            <p:button value="Panel" icon="pi pi-th-large" outcome="/pages/unidades/index" styleClass="ui-button-secondary"/>
+            <p:button value="Nueva Unidad" icon="pi pi-plus" outcome="/pages/unidades/add" styleClass="ui-button-help"/>
+            <p:divider layout="vertical"/>
+            <p:chip label="#{authBean.displayName != null ? authBean.displayName : 'Invitado'}"
+                    icon="pi pi-user"
+                    style="background:rgba(255,255,255,0.06); color:#fff;"/>
+            <h:form rendered="#{authBean.loggedIn}">
+                <p:commandButton value="Salir" icon="pi pi-sign-out" action="#{authBean.logout}" styleClass="ui-button-danger"/>
+            </h:form>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <p:messages showDetail="true" closable="true" severity="info, warn, error, fatal">
+            <p:autoUpdate/>
+        </p:messages>
+        <ui:insert name="content"/>
+    </div>
+
+    <div class="footer">© 2024 - Sistema integral de compras y abastecimiento</div>
+</h:body>
+</html>

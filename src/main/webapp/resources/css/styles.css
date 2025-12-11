@@ -1,0 +1,209 @@
+:root {
+    --primary: #3f8cff;
+    --secondary: #1c2230;
+    --accent: #22d3ee;
+    --surface: #111827;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --success: #34d399;
+    --danger: #f87171;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 20% 20%, rgba(63, 140, 255, 0.25), transparent 25%),
+                radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.2), transparent 30%),
+                linear-gradient(135deg, #0b1221 0%, #0f172a 100%);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.layout-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.glow-orb {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(63, 140, 255, 0.18) 0%, rgba(17, 24, 39, 0) 65%);
+    filter: blur(12px);
+    border-radius: 50%;
+    animation: float 12s ease-in-out infinite alternate;
+}
+
+.glow-orb.orb-2 {
+    right: 5%;
+    top: 10%;
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.16) 0%, rgba(17, 24, 39, 0) 65%);
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    from {
+        transform: translateY(0px) scale(1);
+    }
+    to {
+        transform: translateY(-18px) scale(1.02);
+    }
+}
+
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: grid;
+    place-items: center;
+    color: #0b1221;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(63, 140, 255, 0.35);
+}
+
+.brand-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-hero {
+    background: linear-gradient(145deg, rgba(63, 140, 255, 0.12), rgba(34, 211, 238, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-hero .title {
+    font-size: 1.8rem;
+    margin: 0;
+    color: #fff;
+}
+
+.card-hero .subtitle {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.field-label {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.surface-panel {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.surface-panel:hover {
+    transform: translateY(-2px);
+    border-color: rgba(63, 140, 255, 0.35);
+}
+
+.actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.status-badge {
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #0b1221;
+    background: linear-gradient(135deg, #34d399, #10b981);
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #f97316, #fb923c);
+}
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.login-hero {
+    max-width: 420px;
+    margin: 40px auto;
+    background: rgba(17, 24, 39, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+}
+
+.login-hero h2 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.helper-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 12px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+}

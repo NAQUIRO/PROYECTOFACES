@@ -2,74 +2,63 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Unidades</title>
-    </h:head>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/pages/layout.xhtml">
+    <ui:define name="content">
+        <div class="card-hero">
+            <div style="display:flex; justify-content: space-between; align-items: center; gap: 12px;">
+                <div>
+                    <p class="title">Catálogo de Unidades</p>
+                    <p class="subtitle">Gestiona las unidades de medida utilizadas en órdenes de compra y almacenes.</p>
+                </div>
+                <p:button value="Nueva unidad" outcome="/pages/unidades/add" icon="pi pi-plus" styleClass="ui-button-help"/>
+            </div>
+        </div>
 
-    <h:body>
-        <h:form>
-
-
-            <p:card>
-                <p:commandButton action="#{unidadBean.add}" icon="pi pi-plus"
-                                 value="Nuevo" styleClass="btn-primary"/>
-                <p:spacer width="5"/>
-            </p:card>
-
-            <p:separator/>
-            <p:dataTable widgetVar="unidadTable" var="u" value="#{unidadBean.getAll()}" rows="5"
-                         rowKey="#{u.id}" lazy="true" paginator="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+        <div class="surface-panel">
+            <p:dataTable widgetVar="unidadTable" var="u" value="#{unidadBean.getAll()}" rows="8"
+                         rowKey="#{u.id}" paginator="true" stripedRows="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                          currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
-                         rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+                         rowsPerPageTemplate="5,8,12,20" paginatorPosition="bottom" responsiveLayout="scroll">
 
-                <p:column headerText="Codigo" >
-                    #{u.id}
+                <p:column headerText="Código" style="width:120px;" sortBy="#{u.id}">
+                    <p:tag value="##{u.id}" severity="info"/>
                 </p:column>
 
-                <p:column headerText="Abreviatura" >
-                    #{u.abreviatura}
+                <p:column headerText="Abreviatura" sortBy="#{u.abreviatura}">
+                    <span style="font-weight:600">#{u.abreviatura}</span>
                 </p:column>
 
-                <p:column headerText="Descripcion" >
-                    #{u.descripcion}
+                <p:column headerText="Descripción" sortBy="#{u.descripcion}">
+                    <span style="color:#cbd5e1">#{u.descripcion}</span>
                 </p:column>
 
-                <p:column headerText="Estado" >
-                    #{u.estado}
+                <p:column headerText="Estado" style="width:140px;">
+                    <span class="status-badge #{u.estado eq 'Activo' ? '' : 'badge-warning'}">#{u.estado}</span>
                 </p:column>
 
-                <p:column headerText="Operacion">
-                  
-                        <p:commandButton icon="pi pi-pencil" action="#{unidadBean.edit}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                <p:column headerText="Acciones" style="width:220px; text-align:center;">
+                    <div class="table-actions">
+                        <p:commandButton icon="pi pi-search" action="#{unidadBean.show}" styleClass="ui-button-secondary rounded-button"
+                                         process="@this">
                             <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
                         </p:commandButton>
 
-                        <p:commandButton   action="#{unidadBean.erase}" class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"  onclick="return confirm('¿Confirma que desea eliminar este elemento?')">
+                        <p:commandButton icon="pi pi-pencil" action="#{unidadBean.edit}"  styleClass="ui-button-success rounded-button" process="@this">
+                            <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
+                        </p:commandButton>
+
+                        <p:commandButton action="#{unidadBean.erase}" styleClass="ui-button-danger rounded-button" icon="pi pi-trash" process="@this"
+                                         onclick="return confirm('¿Confirma que desea eliminar este elemento?')">
                              <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
                         </p:commandButton>
-                        
-                          <p:commandButton icon="pi pi-search" action="#{unidadBean.show}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
-                        </p:commandButton>
-                        
-                  
-
+                    </div>
                 </p:column>
 
             </p:dataTable>
-        </h:form>
-
-    </h:body>
-
+        </div>
+    </ui:define>
+</ui:composition>
 </html>
-
-
-
-
-
-
-
-

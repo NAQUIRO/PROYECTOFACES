@@ -1,106 +1,41 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Editar Unidad de Medida</title>
-        <style>
-            .form-container {
-                width: 500px;
-                margin: 20px auto;
-                padding: 20px;
-            }
-            .form-group {
-                margin-bottom: 15px;
-                display: flex;
-                align-items: center;
-            }
-            .form-label {
-                width: 120px;
-                text-align: right;
-                margin-right: 15px;
-            }
-            .form-input {
-                flex: 1;
-            }
-            .button-group {
-                margin-top: 20px;
-                text-align: center;
-            }
-            .ui-panel-title {
-                font-size: 1.5em;
-                margin-bottom: 20px;
-            }
-        </style>
-    </h:head>
-
-    <h:body>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/pages/layout.xhtml">
+    <ui:define name="content">
+        <div class="card-hero">
+            <p class="title">Editar unidad</p>
+            <p class="subtitle">Actualiza la información para mantener la data de unidades siempre vigente.</p>
+        </div>
         <h:form id="form">
-            <p:panel header="Editar Unidad de Medida" styleClass="form-container">
-                <!-- Campo oculto para ID -->
+            <div class="surface-panel">
                 <h:inputHidden value="#{unidadBean.unidad.id}" />
-                
-                <div class="form-group">
-                    <p:outputLabel for="abreviatura" value="Abreviatura" styleClass="form-label"/>
-                    <p:inputText id="abreviatura" 
-                               value="#{unidadBean.unidad.abreviatura}" 
-                               styleClass="form-input" 
-                               placeholder="Abreviatura"
-                               required="true"
-                               requiredMessage="La abreviatura  es requerida"/>
+                <div class="form-grid">
+                    <div>
+                        <span class="field-label">Abreviatura</span>
+                        <p:inputText id="abreviatura" value="#{unidadBean.unidad.abreviatura}" required="true"
+                                     requiredMessage="La abreviatura es requerida" styleClass="w-full"
+                                     placeholder="Abreviatura"/>
+                    </div>
+                    <div>
+                        <span class="field-label">Descripción</span>
+                        <p:inputText id="descripcion" value="#{unidadBean.unidad.descripcion}" styleClass="w-full"
+                                     placeholder="Descripción"/>
+                    </div>
+                    <div>
+                        <span class="field-label">Estado</span>
+                        <p:inputText id="estado" value="#{unidadBean.unidad.estado}" styleClass="w-full"/>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <p:outputLabel for="descripcion" value="Descripcion" styleClass="form-label"/>
-                    <p:inputText id="descripcion" 
-                               value="#{unidadBean.unidad.descripcion}" 
-                               styleClass="form-input" 
-                               placeholder="Descripción"/>
+                <div class="actions-row">
+                    <p:commandButton value="Actualizar" action="#{unidadBean.update}" icon="pi pi-save"
+                                     styleClass="ui-button-success" update="@form"/>
+                    <p:button value="Cancelar" outcome="/pages/unidades/index" icon="pi pi-times" styleClass="ui-button-secondary"/>
                 </div>
-
-                <div class="button-group">
-                    <p:commandButton value="Actualizar" 
-                                   action="#{unidadBean.update}" 
-                                   styleClass="ui-button-success"
-                                   style="margin-right: 10px;"
-                                   update="@form"/>
-                    
-                    
-                    <p:commandButton value="Cancelar" 
-                                   action="/pages/unidades/index?faces-redirect=true"
-                                   styleClass="ui-button-danger"
-                                   immediate="true"/>
-                </div>
-                
-                <p:messages id="messages" showDetail="true" closable="true">
-                    <p:autoUpdate />
-                </p:messages>
-            </p:panel>
+            </div>
         </h:form>
-    </h:body>
+    </ui:define>
+</ui:composition>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

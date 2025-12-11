@@ -1,78 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title> Unidad de Medida</title>
-        <style>
-            .form-container {
-                width: 500px;
-                margin: 20px auto;
-                padding: 20px;
-            }
-            .form-group {
-                margin-bottom: 15px;
-                display: flex;
-                align-items: center;
-            }
-            .form-label {
-                width: 120px;
-                text-align: right;
-                margin-right: 15px;
-            }
-            .form-value {
-                flex: 1;
-                padding: 8px;
-                background-color: #f8f9fa;
-                border-radius: 4px;
-                border: 1px solid #dee2e6;
-            }
-            .button-group {
-                margin-top: 20px;
-                text-align: center;
-            }
-            .ui-panel-title {
-                font-size: 1.5em;
-                margin-bottom: 20px;
-            }
-        </style>
-    </h:head>
-
-    <h:body>
-        <h:form id="form">
-            <p:panel header="Consulta  de  Unidades  de   Medida" styleClass="form-container">
-                <div class="form-group">
-                    <p:outputLabel value="ID:" styleClass="form-label"/>
-                    <p:outputLabel value="#{unidadBean.unidad.id}" styleClass="form-value"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/pages/layout.xhtml">
+    <ui:define name="content">
+        <div class="card-hero">
+            <p class="title">Detalle de unidad</p>
+            <p class="subtitle">Visualiza la información registrada para la unidad seleccionada.</p>
+        </div>
+        <div class="surface-panel">
+            <div class="form-grid">
+                <div>
+                    <span class="field-label">ID</span>
+                    <p:inputText value="#{unidadBean.unidad.id}" readonly="true" styleClass="w-full"/>
                 </div>
-
-                <div class="form-group">
-                    <p:outputLabel value="Abreviatura:" styleClass="form-label"/>
-                    <p:outputLabel value="#{unidadBean.unidad.abreviatura}" styleClass="form-value"/>
+                <div>
+                    <span class="field-label">Abreviatura</span>
+                    <p:inputText value="#{unidadBean.unidad.abreviatura}" readonly="true" styleClass="w-full"/>
                 </div>
-
-                <div class="form-group">
-                    <p:outputLabel value="Descripción:" styleClass="form-label"/>
-                    <p:outputLabel value="#{unidadBean.unidad.descripcion}" styleClass="form-value"/>
+                <div>
+                    <span class="field-label">Descripción</span>
+                    <p:inputTextarea value="#{unidadBean.unidad.descripcion}" readonly="true" autoResize="false" rows="3" styleClass="w-full"/>
                 </div>
-
-                <div class="form-group">
-                    <p:outputLabel value="Estado:" styleClass="form-label"/>
-                    <p:outputLabel value="#{unidadBean.unidad.estado}" styleClass="form-value"/>
+                <div>
+                    <span class="field-label">Estado</span>
+                    <p:inputText value="#{unidadBean.unidad.estado}" readonly="true" styleClass="w-full"/>
                 </div>
-
-                <div class="button-group">
-                    <p:commandButton value="Volver" 
-                                   action="/pages/unidades/index?faces-redirect=true"
-                                   styleClass="ui-button-secondary"/>
-                </div>
-
-                <p:messages id="messages" showDetail="true" closable="true">
-                    <p:autoUpdate />
-                </p:messages>
-            </p:panel>
-        </h:form>
-    </h:body>
+            </div>
+            <div class="actions-row">
+                <p:button value="Volver" outcome="/pages/unidades/index" icon="pi pi-arrow-left" styleClass="ui-button-secondary"/>
+                <p:commandButton value="Editar" action="#{unidadBean.edit}" icon="pi pi-pencil" styleClass="ui-button-success" process="@this"/>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
 </html>

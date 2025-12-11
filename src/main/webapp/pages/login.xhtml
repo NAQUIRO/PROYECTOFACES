@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Ingreso | Sistema de Compras</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body class="layout-shell">
+    <div class="glow-orb"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="content-wrapper">
+        <div class="login-hero">
+            <h2>Bienvenido</h2>
+            <p class="helper-text">Ingrese sus credenciales para acceder al panel de gestión.</p>
+            <h:form id="loginForm">
+                <div class="form-grid">
+                    <div>
+                        <span class="field-label">Usuario</span>
+                        <p:inputText value="#{authBean.username}" placeholder="admin" styleClass="w-full" required="true"/>
+                    </div>
+                    <div>
+                        <span class="field-label">Contraseña</span>
+                        <p:password value="#{authBean.password}" toggleMask="true" feedback="false" placeholder="••••••••" styleClass="w-full" required="true"/>
+                    </div>
+                </div>
+                <div class="actions-row">
+                    <p:commandButton value="Ingresar" icon="pi pi-sign-in" action="#{authBean.login}" update="@form" styleClass="ui-button-primary"/>
+                </div>
+                <p:messages showDetail="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+                <p class="helper-text">Usuario demo: <strong>admin</strong> / <strong>admin123</strong></p>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

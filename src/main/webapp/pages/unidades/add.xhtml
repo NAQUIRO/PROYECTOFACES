@@ -1,93 +1,37 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Unidades de Medida</title>
-        <style>
-            .form-container {
-                width: 500px;
-                margin: 20px auto;
-                padding: 20px;
-            }
-            .form-group {
-                margin-bottom: 15px;
-                display: flex;
-                align-items: center;
-            }
-            .form-label {
-                width: 120px;
-                text-align: right;
-                margin-right: 15px;
-            }
-            .form-input {
-                flex: 1;
-            }
-            .button-group {
-                margin-top: 20px;
-                text-align: center;
-            }
-            .ui-panel-title {
-                font-size: 1.5em;
-                margin-bottom: 20px;
-            }
-        </style>
-    </h:head>
-
-    <h:body>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/pages/layout.xhtml">
+    <ui:define name="content">
+        <div class="card-hero">
+            <p class="title">Registrar nueva unidad</p>
+            <p class="subtitle">Completa los datos para habilitar una nueva unidad de medida dentro de los catálogos.</p>
+        </div>
         <h:form id="form">
-            <p:panel header="Unidades de Medida" styleClass="form-container">
-                <div class="form-group">
-                    <p:outputLabel for="abreviatura" value="Abreviatura" styleClass="form-label"/>
-                    <p:inputText id="abreviatura" value="#{unidadBean.unidad.abreviatura}" 
-                               styleClass="form-input" placeholder="Ingrese la abreviatura"/>
+            <div class="surface-panel">
+                <div class="form-grid">
+                    <div>
+                        <span class="field-label">Abreviatura</span>
+                        <p:inputText id="abreviatura" value="#{unidadBean.unidad.abreviatura}" required="true"
+                                     requiredMessage="La abreviatura es obligatoria" styleClass="w-full"
+                                     placeholder="Ej. kg, m2, L"/>
+                    </div>
+                    <div>
+                        <span class="field-label">Descripción</span>
+                        <p:inputText id="descripcion" value="#{unidadBean.unidad.descripcion}" required="true"
+                                     requiredMessage="La descripción es obligatoria" styleClass="w-full"
+                                     placeholder="Nombre de la unidad"/>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <p:outputLabel for="descripcion" value="Descripcion" styleClass="form-label"/>
-                    <p:inputText id="descripcion" value="#{unidadBean.unidad.descripcion}" 
-                               styleClass="form-input" placeholder="Ingrese la descripcion"/>
+                <div class="actions-row">
+                    <p:commandButton value="Guardar" action="#{unidadBean.create}" icon="pi pi-save"
+                                     styleClass="ui-button-success"/>
+                    <p:button value="Cancelar" outcome="/pages/unidades/index" icon="pi pi-times" styleClass="ui-button-secondary"/>
                 </div>
-
-                <div class="button-group">
-                    <p:commandButton value="Guardar" 
-                                   action="#{unidadBean.create}" 
-                                   styleClass="ui-button-success"
-                                   style="margin-right: 10px;"/>
-                    
-                    <p:commandButton value="Cancelar" 
-                                   action="/unidades/index?faces-redirect=true"
-                                   styleClass="ui-button-danger"
-                                   immediate="true"/>
-                </div>
-            </p:panel>
+            </div>
         </h:form>
-    </h:body>
+    </ui:define>
+</ui:composition>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
