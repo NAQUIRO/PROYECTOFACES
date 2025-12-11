@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Dashboard - Sistema de Gestión</ui:define>
+        <ui:define name="pageTitle">Dashboard</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 25px;
+                    margin-bottom: 30px;
+                }
+
+                .stat-card {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 25px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .stat-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background: linear-gradient(90deg, var(--card-color-1), var(--card-color-2));
+                }
+
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                }
+
+                .stat-card:nth-child(1) {
+                    --card-color-1: #667eea;
+                    --card-color-2: #764ba2;
+                }
+
+                .stat-card:nth-child(2) {
+                    --card-color-1: #f093fb;
+                    --card-color-2: #f5576c;
+                }
+
+                .stat-card:nth-child(3) {
+                    --card-color-1: #4facfe;
+                    --card-color-2: #00f2fe;
+                }
+
+                .stat-card:nth-child(4) {
+                    --card-color-1: #43e97b;
+                    --card-color-2: #38f9d7;
+                }
+
+                .stat-icon {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.8em;
+                    color: white;
+                    background: linear-gradient(135deg, var(--card-color-1), var(--card-color-2));
+                    flex-shrink: 0;
+                }
+
+                .stat-content {
+                    flex: 1;
+                }
+
+                .stat-label {
+                    color: #7f8c8d;
+                    font-size: 0.9em;
+                    margin-bottom: 5px;
+                }
+
+                .stat-value {
+                    font-size: 2em;
+                    font-weight: 700;
+                    color: #2c3e50;
+                }
+
+                .stat-change {
+                    font-size: 0.85em;
+                    color: #27ae60;
+                    margin-top: 5px;
+                }
+
+                .stat-change.negative {
+                    color: #e74c3c;
+                }
+
+                .chart-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 25px;
+                    margin-bottom: 30px;
+                }
+
+                .chart-card {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 25px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                }
+
+                .chart-header {
+                    margin-bottom: 20px;
+                    padding-bottom: 15px;
+                    border-bottom: 2px solid #f0f0f0;
+                }
+
+                .chart-header h3 {
+                    color: #2c3e50;
+                    font-size: 1.3em;
+                    margin-bottom: 5px;
+                }
+
+                .chart-header p {
+                    color: #7f8c8d;
+                    font-size: 0.9em;
+                }
+
+                .recent-activity {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 25px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                }
+
+                .activity-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    padding: 15px;
+                    border-bottom: 1px solid #f0f0f0;
+                    transition: background 0.3s;
+                }
+
+                .activity-item:hover {
+                    background: #f8f9fa;
+                }
+
+                .activity-item:last-child {
+                    border-bottom: none;
+                }
+
+                .activity-icon {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #e8f4fd;
+                    color: #3498db;
+                    flex-shrink: 0;
+                }
+
+                .activity-content {
+                    flex: 1;
+                }
+
+                .activity-title {
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 3px;
+                }
+
+                .activity-time {
+                    font-size: 0.85em;
+                    color: #7f8c8d;
+                }
+
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .stat-card, .chart-card, .recent-activity {
+                    animation: fadeInUp 0.6s ease-out;
+                }
+
+                .stat-card:nth-child(1) { animation-delay: 0.1s; }
+                .stat-card:nth-child(2) { animation-delay: 0.2s; }
+                .stat-card:nth-child(3) { animation-delay: 0.3s; }
+                .stat-card:nth-child(4) { animation-delay: 0.4s; }
+            </style>
+
+            <h:form>
+                <!-- Statistics Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-file-edit"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Requerimientos</div>
+                            <div class="stat-value">24</div>
+                            <div class="stat-change">
+                                <i class="pi pi-arrow-up"></i> 12% este mes
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-shopping-cart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Órdenes de Compra</div>
+                            <div class="stat-value">18</div>
+                            <div class="stat-change">
+                                <i class="pi pi-arrow-up"></i> 8% este mes
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Materiales</div>
+                            <div class="stat-value">156</div>
+                            <div class="stat-change">
+                                <i class="pi pi-arrow-up"></i> 5% este mes
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Proveedores Activos</div>
+                            <div class="stat-value">42</div>
+                            <div class="stat-change">
+                                <i class="pi pi-arrow-up"></i> 3 nuevos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Requerimientos por Mes</h3>
+                            <p>Últimos 6 meses</p>
+                        </div>
+                        <p:chart type="line" model="#{dashboardBean.lineModel}" style="height:300px"/>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Estado de Órdenes</h3>
+                            <p>Distribución actual</p>
+                        </div>
+                        <p:chart type="pie" model="#{dashboardBean.pieModel}" style="height:300px"/>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <div class="chart-header">
+                        <h3>Actividad Reciente</h3>
+                        <p>Últimas acciones del sistema</p>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="pi pi-check-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Orden de Compra OC-2024-045 aprobada</div>
+                            <div class="activity-time">Hace 2 horas</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="pi pi-file-edit"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Nuevo requerimiento REQ-2024-128 creado</div>
+                            <div class="activity-time">Hace 4 horas</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="pi pi-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Proveedor "Construcciones SAC" agregado</div>
+                            <div class="activity-time">Hace 6 horas</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="pi pi-box"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Material "Cemento Tipo I" actualizado</div>
+                            <div class="activity-time">Hace 1 día</div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

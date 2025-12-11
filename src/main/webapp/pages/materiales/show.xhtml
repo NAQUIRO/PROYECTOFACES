@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Detalle de Material</ui:define>
+        <ui:define name="pageTitle">Detalle de Material</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .detail-card {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    background: white;
+                    border-radius: 15px;
+                    padding: 35px;
+                    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+                }
+
+                .detail-header {
+                    text-align: center;
+                    margin-bottom: 35px;
+                    padding-bottom: 20px;
+                    border-bottom: 3px solid #4facfe;
+                }
+
+                .detail-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 25px;
+                    margin-bottom: 30px;
+                }
+
+                .detail-item {
+                    padding: 15px;
+                    background: #f8f9fa;
+                    border-radius: 10px;
+                    border-left: 4px solid #4facfe;
+                }
+
+                .detail-label {
+                    font-size: 0.9em;
+                    color: #7f8c8d;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                .detail-value {
+                    font-size: 1.1em;
+                    color: #2c3e50;
+                    font-weight: 500;
+                }
+            </style>
+
+            <div class="detail-card">
+                <div class="detail-header">
+                    <h2><i class="pi pi-box"></i> Información del Material</h2>
+                </div>
+
+                <h:form>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Código</div>
+                            <div class="detail-value">#{materialBean.material.codcorrelativo}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">Estado</div>
+                            <div class="detail-value">
+                                <span class="estado-badge #{materialBean.material.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                    #{materialBean.material.estado}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="detail-item" style="grid-column: 1 / -1">
+                            <div class="detail-label">Nombre</div>
+                            <div class="detail-value">#{materialBean.material.nombre}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">Grupo</div>
+                            <div class="detail-value">#{materialBean.material.grupo.nombre}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">Unidad</div>
+                            <div class="detail-value">#{materialBean.material.unidad.abreviatura} - #{materialBean.material.unidad.descripcion}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">Fecha de Creación</div>
+                            <div class="detail-value">
+                                <h:outputText value="#{materialBean.material.fechaCreacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </div>
+                        </div>
+
+                        <div class="detail-item" style="grid-column: 1 / -1">
+                            <div class="detail-label">Descripción</div>
+                            <div class="detail-value">#{materialBean.material.descripcion}</div>
+                        </div>
+
+                        <div class="detail-item" style="grid-column: 1 / -1">
+                            <div class="detail-label">Observación</div>
+                            <div class="detail-value">#{materialBean.material.observacion}</div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Volver" 
+                                       icon="pi pi-arrow-left"
+                                       action="/pages/materiales/index?faces-redirect=true"
+                                       styleClass="btn-cancel"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Nuevo Material</ui:define>
+        <ui:define name="pageTitle">Nuevo Material</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-plus-circle"></i> Nuevo Material</h2>
+                    <p>Complete los datos del nuevo material</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="codigo">Código Correlativo <span class="required-mark">*</span></label>
+                        <p:inputText id="codigo" 
+                                   value="#{materialBean.material.codcorrelativo}" 
+                                   placeholder="Código (3 caracteres)"
+                                   required="true"
+                                   maxlength="3"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre <span class="required-mark">*</span></label>
+                        <p:inputText id="nombre" 
+                                   value="#{materialBean.material.nombre}" 
+                                   placeholder="Nombre del material"
+                                   required="true"
+                                   maxlength="75"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grupo">Grupo <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="grupo" 
+                                       value="#{materialBean.grupoId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un grupo" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{materialBean.allGrupos}" 
+                                         var="g" 
+                                         itemLabel="#{g.nombre}" 
+                                         itemValue="#{g.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unidad">Unidad <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="unidad" 
+                                       value="#{materialBean.unidadId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione una unidad" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{materialBean.allUnidades}" 
+                                         var="u" 
+                                         itemLabel="#{u.abreviatura} - #{u.descripcion}" 
+                                         itemValue="#{u.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <p:inputTextarea id="descripcion" 
+                                       value="#{materialBean.material.descripcion}" 
+                                       placeholder="Descripción del material"
+                                       rows="3"
+                                       maxlength="85"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observacion">Observación</label>
+                        <p:inputTextarea id="observacion" 
+                                       value="#{materialBean.material.observacion}" 
+                                       placeholder="Observaciones adicionales"
+                                       rows="3"
+                                       maxlength="85"/>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Guardar" 
+                                       icon="pi pi-check"
+                                       action="#{materialBean.create}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/materiales/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

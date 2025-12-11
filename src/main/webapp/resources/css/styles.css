@@ -1,0 +1,176 @@
+/* Estilos globales para formularios */
+.form-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    padding: 35px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+}
+
+.form-header h2 {
+    color: #2c3e50;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.form-header p {
+    color: #7f8c8d;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.05em;
+}
+
+.ui-inputfield, .ui-inputtextarea, .ui-selectonemenu {
+    width: 100% !important;
+    padding: 15px !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    font-size: 1em !important;
+    transition: all 0.3s ease !important;
+}
+
+.ui-inputfield:focus, .ui-inputtextarea:focus, .ui-selectonemenu:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.btn-save, .btn-update {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    padding: 15px 40px !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-save:hover, .btn-update:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4) !important;
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%) !important;
+    border: none !important;
+    padding: 15px 40px !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(127, 140, 141, 0.4) !important;
+}
+
+.required-mark {
+    color: #e74c3c;
+    margin-left: 3px;
+}
+
+/* Estilos para badges de estado */
+.estado-badge {
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.estado-activo {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+.estado-baja, .estado-inactivo {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+    color: white;
+}
+
+/* Estilos para botones de acción en tablas */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4) !important;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(235, 51, 73, 0.4) !important;
+}
+
+.btn-view {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-view:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4) !important;
+}

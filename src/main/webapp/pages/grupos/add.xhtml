@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Nuevo Grupo</ui:define>
+        <ui:define name="pageTitle">Nuevo Grupo de Material</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-plus-circle"></i> Nuevo Grupo</h2>
+                    <p>Complete los datos del nuevo grupo</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="codigo">Código <span class="required-mark">*</span></label>
+                        <p:inputText id="codigo" 
+                                   value="#{grupoBean.grupo.codgrupo}" 
+                                   placeholder="Código del grupo (3 caracteres)"
+                                   required="true"
+                                   maxlength="3"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre <span class="required-mark">*</span></label>
+                        <p:inputText id="nombre" 
+                                   value="#{grupoBean.grupo.nombre}" 
+                                   placeholder="Nombre del grupo"
+                                   required="true"
+                                   maxlength="85"/>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Guardar" 
+                                       icon="pi pi-check"
+                                       action="#{grupoBean.create}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/grupos/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

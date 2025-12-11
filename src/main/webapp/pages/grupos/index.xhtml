@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Grupos de Material</ui:define>
+        <ui:define name="pageTitle">Grupos de Material</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .action-header {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 15px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                    margin-bottom: 25px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .btn-nuevo {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    border: none !important;
+                    padding: 12px 25px !important;
+                    border-radius: 10px !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                }
+
+                .table-container {
+                    background: white;
+                    padding: 25px;
+                    border-radius: 15px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                }
+
+                .estado-badge {
+                    padding: 6px 15px;
+                    border-radius: 20px;
+                    font-size: 0.85em;
+                    font-weight: 600;
+                }
+
+                .estado-activo {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                    color: white;
+                }
+
+                .estado-baja {
+                    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                    color: white;
+                }
+            </style>
+
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-th-large"></i> Gestión de Grupos</h3>
+                    <p:commandButton value="Nuevo Grupo" 
+                                   icon="pi pi-plus"
+                                   action="#{grupoBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{grupoBean.getAll()}" 
+                               var="g" 
+                               rows="10"
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                               currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords}"
+                               emptyMessage="No hay grupos registrados">
+
+                        <p:column headerText="Código" style="width: 100px; text-align: center">
+                            <h:outputText value="#{g.codgrupo}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{g.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 120px; text-align: center">
+                            <span class="estado-badge #{g.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{g.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{grupoBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{g.id}" target="#{grupoBean.grupo.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{grupoBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{g.id}" target="#{grupoBean.grupo.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{grupoBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Está seguro de eliminar este grupo?')">
+                                    <f:setPropertyActionListener value="#{g.id}" target="#{grupoBean.grupo.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

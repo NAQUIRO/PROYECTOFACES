@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Nuevo Proveedor</ui:define>
+        <ui:define name="pageTitle">Nuevo Proveedor</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-plus-circle"></i> Nuevo Proveedor</h2>
+                    <p>Complete la información del proveedor</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="nombre">Razón Social <span class="required-mark">*</span></label>
+                        <p:inputText id="nombre" 
+                                   value="#{proveedorBean.proveedor.nombre}" 
+                                   placeholder="Razón social del proveedor"
+                                   required="true"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ruc">RUC <span class="required-mark">*</span></label>
+                        <p:inputText id="ruc" 
+                                   value="#{proveedorBean.proveedor.ruc}" 
+                                   placeholder="Número de RUC"
+                                   required="true"
+                                   maxlength="15"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <p:inputTextarea id="direccion" 
+                                       value="#{proveedorBean.proveedor.direccion}" 
+                                       placeholder="Dirección fiscal"
+                                       rows="2"
+                                       maxlength="255"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contacto">Persona de Contacto</label>
+                        <p:inputText id="contacto" 
+                                   value="#{proveedorBean.proveedor.contacto}" 
+                                   placeholder="Nombre del contacto"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <p:inputText id="telefono" 
+                                   value="#{proveedorBean.proveedor.telefono}" 
+                                   placeholder="Número de teléfono"
+                                   maxlength="50"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico</label>
+                        <p:inputText id="correo" 
+                                   value="#{proveedorBean.proveedor.correo}" 
+                                   placeholder="correo@ejemplo.com"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuenta">Cuenta Bancaria</label>
+                        <p:inputText id="cuenta" 
+                                   value="#{proveedorBean.proveedor.cuentaBancaria}" 
+                                   placeholder="Número de cuenta bancaria"
+                                   maxlength="50"/>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Guardar" 
+                                       icon="pi pi-check"
+                                       action="#{proveedorBean.create}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/proveedores/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

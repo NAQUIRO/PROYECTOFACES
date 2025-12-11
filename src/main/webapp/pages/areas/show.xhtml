@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="title">Detalle del Área</ui:define>
+    <ui:define name="pageTitle">Detalle del Área</ui:define>
+
+    <ui:define name="content">
+        <div class="detail-card">
+            <div class="detail-header">
+                <h2><i class="pi pi-building"></i> Información del Área</h2>
+            </div>
+
+            <div class="detail-content">
+                <div class="detail-row">
+                    <div class="detail-label">Código:</div>
+                    <div class="detail-value">#{areaBean.area.codigo}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Nombre:</div>
+                    <div class="detail-value">#{areaBean.area.nombre}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Centro de Costo:</div>
+                    <div class="detail-value">#{areaBean.area.centroCosto.nombre}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Descripción:</div>
+                    <div class="detail-value">#{areaBean.area.descripcion}</div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Estado:</div>
+                    <div class="detail-value">
+                        <span
+                            class="estado-badge #{areaBean.area.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                            #{areaBean.area.estado}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <h:form>
+                    <p:commandButton value="Volver" icon="pi pi-arrow-left"
+                        action="/pages/areas/index?faces-redirect=true" styleClass="btn-cancel" />
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Órdenes de Compra</ui:define>
+        <ui:define name="pageTitle">Gestión de Órdenes de Compra</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .estado-pendiente {
+                    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+                    color: white;
+                }
+                .estado-vistobueno {
+                    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                    color: white;
+                }
+                .estado-aprobado {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                    color: white;
+                }
+                .estado-enviada {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                }
+                .estado-anulada {
+                    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                    color: white;
+                }
+            </style>
+
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-shopping-cart"></i> Órdenes de Compra</h3>
+                    <p:commandButton value="Nueva Orden" 
+                                   icon="pi pi-plus"
+                                   action="#{ordenCompraBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{ordenCompraBean.getAll()}" 
+                               var="o" 
+                               rows="10"
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                               emptyMessage="No hay órdenes de compra registradas">
+
+                        <p:column headerText="Código" style="width: 120px">
+                            <h:outputText value="#{o.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha" style="width: 110px; text-align: center">
+                            <h:outputText value="#{o.fecha}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Proveedor" style="width: 200px">
+                            <h:outputText value="#{o.proveedor.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Solicitante" style="width: 150px">
+                            <h:outputText value="#{o.solicitante.nombres} #{o.solicitante.apellidos}"/>
+                        </p:column>
+
+                        <p:column headerText="Moneda" style="width: 80px; text-align: center">
+                            <h:outputText value="#{o.moneda}"/>
+                        </p:column>
+
+                        <p:column headerText="Total" style="width: 120px; text-align: right">
+                            <h:outputText value="#{o.total}">
+                                <f:convertNumber type="currency" currencySymbol="S/ "/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 110px; text-align: center">
+                            <span class="estado-badge estado-#{o.estado.toString().toLowerCase()}">
+                                #{o.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 250px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{ordenCompraBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar"
+                                               rendered="#{o.estado == 'Pendiente'}">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-check" 
+                                               action="#{ordenCompraBean.aprobar}" 
+                                               styleClass="btn-edit"
+                                               title="Aprobar"
+                                               rendered="#{o.estado == 'Pendiente' or o.estado == 'VistoBueno'}"
+                                               onclick="return confirm('¿Aprobar esta orden de compra?')">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-send" 
+                                               action="#{ordenCompraBean.enviar}" 
+                                               styleClass="btn-view"
+                                               title="Enviar"
+                                               rendered="#{o.estado == 'Aprobado'}"
+                                               onclick="return confirm('¿Enviar esta orden de compra?')">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-print" 
+                                               action="#{ordenCompraBean.imprimir}"  
+                                               styleClass="btn-view"
+                                               title="Imprimir">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{ordenCompraBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-times" 
+                                               action="#{ordenCompraBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Anular"
+                                               rendered="#{o.estado != 'Anulada' and o.estado != 'Enviada'}"
+                                               onclick="return confirm('¿Está seguro de anular esta orden?')">
+                                    <f:setPropertyActionListener value="#{o.id}" target="#{ordenCompraBean.ordenCompra.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
