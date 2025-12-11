@@ -38,7 +38,7 @@ public class JPAFactory {
             properties.put("hibernate.use_sql_comments", "true");
             properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
             // Evita que Hibernate registre el transformador de bytecode que estaba generando errores de carga circular
-            properties.put("hibernate.bytecode.provider", "none");
+            //properties.put("hibernate.bytecode.provider", "none");
 
 
             entityManagerFactory = Persistence.createEntityManagerFactory(
