@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+    xmlns="https://jakarta.ee/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+                        https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="bdjpa" transaction-type="RESOURCE_LOCAL">
+    <class>com.uns.entities.Unidad</class>
+    <class>com.uns.entities.Area</class>
+    <class>com.uns.entities.Centro_costo</class>
+    <class>com.uns.entities.Detalle_orden_compra</class>
+    <class>com.uns.entities.Detalle_requerimiento</class>
+    <class>com.uns.entities.Grupo</class>
+    <class>com.uns.entities.Material</class>
+    <class>com.uns.entities.Orden_compra</class>
+    <class>com.uns.entities.Proveedor</class>
+    <class>com.uns.entities.Proyecto</class>
+    <class>com.uns.entities.Requerimiento</class>
+    <class>com.uns.entities.Rol</class>
+    <class>com.uns.entities.Unidad</class>
+    <class>com.uns.entities.Usuario</class>
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dbprueba?zeroDateTimeBehavior=convertToNull"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.password" value=" "/>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE"/>
+    </properties>
+  </persistence-unit>
+</persistence>

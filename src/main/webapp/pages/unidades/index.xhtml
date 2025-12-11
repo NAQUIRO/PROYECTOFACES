@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Unidades</title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+
+
+            <p:card>
+                <p:commandButton action="#{unidadBean.add}" icon="pi pi-plus"
+                                 value="Nuevo" styleClass="btn-primary"/>
+                <p:spacer width="5"/>
+            </p:card>
+
+            <p:separator/>
+            <p:dataTable widgetVar="unidadTable" var="u" value="#{unidadBean.getAll()}" rows="5"
+                         rowKey="#{u.id}" lazy="true" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                         currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} ]"
+                         rowsPerPageTemplate="5,10,15,20,30" paginatorPosition="bottom">
+
+                <p:column headerText="Codigo" >
+                    #{u.id}
+                </p:column>
+
+                <p:column headerText="Abreviatura" >
+                    #{u.abreviatura}
+                </p:column>
+
+                <p:column headerText="Descripcion" >
+                    #{u.descripcion}
+                </p:column>
+
+                <p:column headerText="Estado" >
+                    #{u.estado}
+                </p:column>
+
+                <p:column headerText="Operacion">
+                  
+                        <p:commandButton icon="pi pi-pencil" action="#{unidadBean.edit}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                            <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
+                        </p:commandButton>
+
+                        <p:commandButton   action="#{unidadBean.erase}" class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"  onclick="return confirm('¿Confirma que desea eliminar este elemento?')">
+                             <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
+                        </p:commandButton>
+                        
+                          <p:commandButton icon="pi pi-search" action="#{unidadBean.show}"  styleClass="edit-button rounded-button ui-button-success" process="@this">
+                            <f:setPropertyActionListener value="#{u.id}"  target="#{unidadBean.unidad.id}" />
+                        </p:commandButton>
+                        
+                  
+
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+
+</html>
+
+
+
+
+
+
+
+
