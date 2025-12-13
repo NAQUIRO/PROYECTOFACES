@@ -45,9 +45,7 @@ public class ProveedorDao extends JPA implements DAO<Proveedor> {
     public List<Proveedor> getAllActivos() {
         return executeQueryList(em -> {
             try {
-                return em
-                        .createQuery("SELECT p FROM Proveedor p WHERE p.estado = 'Activo' ORDER BY p.nombre",
-                                Proveedor.class)
+                return em.createQuery("SELECT p FROM Proveedor p WHERE p.estado = 'Activo' ORDER BY p.nombre", Proveedor.class)
                         .getResultList();
             } catch (Exception e) {
                 logger.error("Error al obtener proveedores activos: {}", e.getMessage(), e);
@@ -64,6 +62,7 @@ public class ProveedorDao extends JPA implements DAO<Proveedor> {
             t.begin();
             em.persist(entity);
             t.commit();
+            logger.info("Proveedor creado exitosamente: {}", entity.getNombre());
             return entity;
         } catch (Exception e) {
             if (t != null && t.isActive()) {
@@ -82,16 +81,22 @@ public class ProveedorDao extends JPA implements DAO<Proveedor> {
         EntityTransaction t = em.getTransaction();
         try {
             Proveedor updateObj = em.find(Proveedor.class, entity.getId());
+            if (updateObj == null) {
+                throw new RuntimeException("Proveedor no encontrado: " + entity.getId());
+            }
+            
             updateObj.setRuc(entity.getRuc());
             updateObj.setNombre(entity.getNombre());
             updateObj.setDireccion(entity.getDireccion());
             updateObj.setTelefono(entity.getTelefono());
             updateObj.setCorreo(entity.getCorreo());
             updateObj.setContacto(entity.getContacto());
+            updateObj.setCuentaBancaria(entity.getCuentaBancaria());
 
             t.begin();
             updateObj = em.merge(updateObj);
             t.commit();
+            logger.info("Proveedor actualizado exitosamente: {}", updateObj.getNombre());
             return updateObj;
         } catch (Exception e) {
             if (t != null && t.isActive()) {
@@ -110,11 +115,16 @@ public class ProveedorDao extends JPA implements DAO<Proveedor> {
         EntityTransaction t = em.getTransaction();
         try {
             Proveedor deleteObj = em.find(Proveedor.class, entity.getId());
+            if (deleteObj == null) {
+                throw new RuntimeException("Proveedor no encontrado: " + entity.getId());
+            }
+            
             deleteObj.setEstado(Proveedor.Estado.Inactivo);
 
             t.begin();
             deleteObj = em.merge(deleteObj);
             t.commit();
+            logger.info("Proveedor marcado como inactivo: {}", deleteObj.getNombre());
             return deleteObj;
         } catch (Exception e) {
             if (t != null && t.isActive()) {

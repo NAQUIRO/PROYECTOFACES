@@ -1,15 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Detalle de Usuario</ui:define>
+        <ui:define name="pageTitle">Detalle de Usuario</ui:define>
+
+        <ui:define name="content">
+            <div class="detail-card">
+                <div class="detail-header">
+                    <h2><i class="pi pi-user"></i> Información del Usuario</h2>
+                </div>
+
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <div class="detail-label">Usuario:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.username}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Nombres:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.nombres}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Apellidos:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.apellidos}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Correo:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.correo}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Teléfono:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.telefono}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Rol:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.rol.nombre}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Área:</div>
+                        <div class="detail-value">#{usuarioBean.usuario.area.nombre}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Estado:</div>
+                        <div class="detail-value">
+                            <span class="estado-badge #{usuarioBean.usuario.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{usuarioBean.usuario.estado}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <h:form>
+                        <p:commandButton value="Volver" 
+                                       icon="pi pi-arrow-left"
+                                       action="/pages/usuarios/index?faces-redirect=true"
+                                       styleClass="btn-cancel"/>
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
 </html>

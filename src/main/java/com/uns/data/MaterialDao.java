@@ -21,7 +21,17 @@ public class MaterialDao extends JPA implements DAO<Material> {
                 if (id == null || id <= 0) {
                     throw new IllegalArgumentException("ID inválido");
                 }
-                return em.find(Material.class, id);
+                Material material = em.find(Material.class, id);
+                // Inicializar relaciones lazy si existen
+                if (material != null) {
+                    if (material.getGrupo() != null) {
+                        material.getGrupo().getId();
+                    }
+                    if (material.getUnidad() != null) {
+                        material.getUnidad().getId();
+                    }
+                }
+                return material;
             } catch (Exception e) {
                 logger.error("Error al buscar material: {}", e.getMessage(), e);
                 throw new RuntimeException("Error al buscar material", e);
@@ -66,6 +76,7 @@ public class MaterialDao extends JPA implements DAO<Material> {
             t.begin();
             em.persist(entity);
             t.commit();
+            logger.info("Material creado exitosamente: {}", entity.getNombre());
             return entity;
         } catch (Exception e) {
             if (t != null && t.isActive()) {
@@ -84,6 +95,9 @@ public class MaterialDao extends JPA implements DAO<Material> {
         EntityTransaction t = em.getTransaction();
         try {
             Material updateObj = em.find(Material.class, entity.getId());
+            if (updateObj == null) {
+                throw new RuntimeException("Material no encontrado: " + entity.getId());
+            }
 
             updateObj.setCodcorrelativo(entity.getCodcorrelativo());
             updateObj.setNombre(entity.getNombre());
@@ -95,6 +109,7 @@ public class MaterialDao extends JPA implements DAO<Material> {
             t.begin();
             updateObj = em.merge(updateObj);
             t.commit();
+            logger.info("Material actualizado exitosamente: {}", updateObj.getNombre());
             return updateObj;
         } catch (Exception e) {
             if (t != null && t.isActive()) {
@@ -113,11 +128,16 @@ public class MaterialDao extends JPA implements DAO<Material> {
         EntityTransaction t = em.getTransaction();
         try {
             Material deleteObj = em.find(Material.class, entity.getId());
+            if (deleteObj == null) {
+                throw new RuntimeException("Material no encontrado: " + entity.getId());
+            }
+            
             deleteObj.setEstado(Material.Estado.Baja);
 
             t.begin();
             deleteObj = em.merge(deleteObj);
             t.commit();
+            logger.info("Material marcado como baja: {}", deleteObj.getNombre());
             return deleteObj;
         } catch (Exception e) {
             if (t != null && t.isActive()) {

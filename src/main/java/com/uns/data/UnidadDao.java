@@ -45,8 +45,8 @@ public class UnidadDao extends JPA implements DAO<Unidad> {
     public List<Unidad> getAllActivos() {
         return executeQueryList(em -> {
             try {
-                return em
-                        .createQuery("SELECT u FROM Unidad u WHERE u.estado = 'Activo' ORDER BY u.nombre", Unidad.class)
+                // CORREGIDO: Ordenar por abreviatura en lugar de nombre (que no existe)
+                return em.createQuery("SELECT u FROM Unidad u WHERE u.estado = 'Activo' ORDER BY u.abreviatura", Unidad.class)
                         .getResultList();
             } catch (Exception e) {
                 logger.error("Error al obtener unidades activas: {}", e.getMessage(), e);
@@ -83,6 +83,7 @@ public class UnidadDao extends JPA implements DAO<Unidad> {
             Unidad updateObj = em.find(Unidad.class, entity.getId());
             updateObj.setAbreviatura(entity.getAbreviatura());
             updateObj.setDescripcion(entity.getDescripcion());
+            updateObj.setEstado(entity.getEstado());
 
             t.begin();
             updateObj = em.merge(updateObj);
