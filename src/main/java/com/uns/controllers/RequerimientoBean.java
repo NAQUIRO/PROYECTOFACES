@@ -1,21 +1,7 @@
 package com.uns.controllers;
 
-import com.uns.data.AreaDao;
-import com.uns.data.CentroCostoDao;
-import com.uns.data.DetalleRequerimientoDao;
-import com.uns.data.MaterialDao;
-import com.uns.data.ProyectoDao;
-import com.uns.data.RequerimientoDao;
-import com.uns.data.UnidadDao;
-import com.uns.data.UsuarioDao;
-import com.uns.entities.Area;
-import com.uns.entities.Centro_costo;
-import com.uns.entities.Detalle_requerimiento;
-import com.uns.entities.Material;
-import com.uns.entities.Proyecto;
-import com.uns.entities.Requerimiento;
-import com.uns.entities.Unidad;
-import com.uns.entities.Usuario;
+import com.uns.data.*;
+import com.uns.entities.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
@@ -27,12 +13,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named("requerimientoBean")
 @SessionScoped
 public class RequerimientoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(RequerimientoBean.class);
 
     @Inject
     private RequerimientoDao requerimientoDao;
@@ -58,26 +47,35 @@ public class RequerimientoBean implements Serializable {
     @Inject
     private UnidadDao unidadDao;
 
-    private Requerimiento requerimiento = new Requerimiento();
+    private Requerimiento requerimiento;
     private Long solicitanteId;
     private Long proyectoId;
     private Long areaId;
     private Long centroCostoId;
     private Long aprobadorId;
 
-    // Gestión de detalles
-    private List<Detalle_requerimiento> detalles = new ArrayList<>();
-    private Detalle_requerimiento detalleTemp = new Detalle_requerimiento();
+    private List<Detalle_requerimiento> detalles;
+    private Detalle_requerimiento detalleTemp;
     private Long materialId;
     private Long unidadId;
 
+    public RequerimientoBean() {
+        this.requerimiento = new Requerimiento();
+        this.detalles = new ArrayList<>();
+        this.detalleTemp = new Detalle_requerimiento();
+    }
+
     @PostConstruct
     public void init() {
+        logger.info("Inicializando RequerimientoBean");
         limpiarFormulario();
     }
 
     // Getters y Setters
     public Requerimiento getRequerimiento() {
+        if (requerimiento == null) {
+            requerimiento = new Requerimiento();
+        }
         return requerimiento;
     }
 
@@ -126,6 +124,9 @@ public class RequerimientoBean implements Serializable {
     }
 
     public List<Detalle_requerimiento> getDetalles() {
+        if (detalles == null) {
+            detalles = new ArrayList<>();
+        }
         return detalles;
     }
 
@@ -134,6 +135,9 @@ public class RequerimientoBean implements Serializable {
     }
 
     public Detalle_requerimiento getDetalleTemp() {
+        if (detalleTemp == null) {
+            detalleTemp = new Detalle_requerimiento();
+        }
         return detalleTemp;
     }
 
@@ -161,12 +165,10 @@ public class RequerimientoBean implements Serializable {
     public List<Requerimiento> getAll() {
         try {
             List<Requerimiento> result = requerimientoDao.getAll();
-            if (result == null || result.isEmpty()) {
-                return new ArrayList<>();
-            }
-            return result;
+            return result != null ? result : new ArrayList<>();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener requerimientos: " + e.getMessage());
+            logger.error("Error al obtener requerimientos: {}", e.getMessage(), e);
+            addErrorMessage("Error al obtener requerimientos");
             return new ArrayList<>();
         }
     }
@@ -175,7 +177,7 @@ public class RequerimientoBean implements Serializable {
         try {
             return usuarioDao.getAll();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener usuarios: " + e.getMessage());
+            logger.error("Error al obtener usuarios: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -184,7 +186,7 @@ public class RequerimientoBean implements Serializable {
         try {
             return proyectoDao.getAllActivos();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener proyectos: " + e.getMessage());
+            logger.error("Error al obtener proyectos: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -193,7 +195,7 @@ public class RequerimientoBean implements Serializable {
         try {
             return areaDao.getAllActivos();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener áreas: " + e.getMessage());
+            logger.error("Error al obtener áreas: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -202,7 +204,7 @@ public class RequerimientoBean implements Serializable {
         try {
             return centroCostoDao.getAllActivos();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener centros de costo: " + e.getMessage());
+            logger.error("Error al obtener centros de costo: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -211,7 +213,7 @@ public class RequerimientoBean implements Serializable {
         try {
             return materialDao.getAllActivos();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener materiales: " + e.getMessage());
+            logger.error("Error al obtener materiales: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -220,28 +222,24 @@ public class RequerimientoBean implements Serializable {
         try {
             return unidadDao.getAll();
         } catch (Exception e) {
-            addErrorMessage("Error al obtener unidades: " + e.getMessage());
+            logger.error("Error al obtener unidades: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
     }
 
-    // Métodos de gestión de detalles
     public void agregarDetalle() {
         try {
             if (!validarDetalle()) {
                 return;
             }
 
-            // Crear nuevo detalle
             Detalle_requerimiento nuevoDetalle = new Detalle_requerimiento();
 
-            // Asignar material
             if (materialId != null) {
                 Material material = materialDao.getById(materialId);
                 nuevoDetalle.setMaterial(material);
             }
 
-            // Asignar unidad
             if (unidadId != null) {
                 Unidad unidad = unidadDao.getById(unidadId);
                 nuevoDetalle.setUnidad(unidad);
@@ -251,15 +249,12 @@ public class RequerimientoBean implements Serializable {
             nuevoDetalle.setObservacion(detalleTemp.getObservacion());
             nuevoDetalle.setEstado(Detalle_requerimiento.Estado.Pendiente);
 
-            // Agregar a la lista
             detalles.add(nuevoDetalle);
-
-            // Limpiar formulario temporal
             limpiarDetalleTemp();
-
             addInfoMessage("Ítem agregado correctamente");
         } catch (Exception e) {
-            addErrorMessage("Error al agregar ítem: " + e.getMessage());
+            logger.error("Error al agregar detalle: {}", e.getMessage(), e);
+            addErrorMessage("Error al agregar ítem");
         }
     }
 
@@ -268,19 +263,8 @@ public class RequerimientoBean implements Serializable {
             detalles.remove(detalle);
             addInfoMessage("Ítem eliminado correctamente");
         } catch (Exception e) {
-            addErrorMessage("Error al eliminar ítem: " + e.getMessage());
-        }
-    }
-
-    public void cambiarEstadoDetalle(Detalle_requerimiento detalle, Detalle_requerimiento.Estado nuevoEstado) {
-        try {
-            detalle.setEstado(nuevoEstado);
-            if (detalle.getId() != null) {
-                detalleRequerimientoDao.update(detalle);
-            }
-            addInfoMessage("Estado del ítem actualizado");
-        } catch (Exception e) {
-            addErrorMessage("Error al cambiar estado: " + e.getMessage());
+            logger.error("Error al eliminar detalle: {}", e.getMessage(), e);
+            addErrorMessage("Error al eliminar ítem");
         }
     }
 
@@ -306,7 +290,6 @@ public class RequerimientoBean implements Serializable {
         unidadId = null;
     }
 
-    // Métodos CRUD
     public String create() {
         try {
             if (!validarRequerimiento()) {
@@ -336,10 +319,8 @@ public class RequerimientoBean implements Serializable {
                 requerimiento.setCentroCosto(centroCosto);
             }
 
-            // Guardar requerimiento
             requerimientoDao.create(requerimiento);
 
-            // Guardar detalles
             for (Detalle_requerimiento detalle : detalles) {
                 detalle.setRequerimiento(requerimiento);
                 detalleRequerimientoDao.create(detalle);
@@ -349,7 +330,8 @@ public class RequerimientoBean implements Serializable {
             limpiarFormulario();
             return "/pages/requerimientos/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al crear requerimiento: " + e.getMessage());
+            logger.error("Error al crear requerimiento: {}", e.getMessage(), e);
+            addErrorMessage("Error al crear requerimiento");
             return null;
         }
     }
@@ -380,18 +362,9 @@ public class RequerimientoBean implements Serializable {
                 requerimiento.setCentroCosto(centroCosto);
             }
 
-            if (aprobadorId != null) {
-                Usuario aprobador = usuarioDao.getById(aprobadorId);
-                requerimiento.setAprobador(aprobador);
-            }
-
-            // Actualizar requerimiento
             requerimientoDao.update(requerimiento);
-
-            // Eliminar detalles antiguos
             detalleRequerimientoDao.deleteByRequerimiento(requerimiento.getId());
 
-            // Guardar nuevos detalles
             for (Detalle_requerimiento detalle : detalles) {
                 detalle.setRequerimiento(requerimiento);
                 detalleRequerimientoDao.create(detalle);
@@ -400,7 +373,8 @@ public class RequerimientoBean implements Serializable {
             addInfoMessage("Requerimiento actualizado exitosamente");
             return "/pages/requerimientos/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al actualizar requerimiento: " + e.getMessage());
+            logger.error("Error al actualizar requerimiento: {}", e.getMessage(), e);
+            addErrorMessage("Error al actualizar requerimiento");
             return null;
         }
     }
@@ -412,31 +386,12 @@ public class RequerimientoBean implements Serializable {
             requerimiento.setEstado(Requerimiento.Estado.Aprobado);
             requerimiento.setFechaAprobacion(LocalDate.now());
 
-            if (aprobadorId != null) {
-                Usuario aprobador = usuarioDao.getById(aprobadorId);
-                requerimiento.setAprobador(aprobador);
-            }
-
             requerimientoDao.update(requerimiento);
             addInfoMessage("Requerimiento aprobado");
             return "/pages/requerimientos/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al aprobar requerimiento: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public String rechazar() {
-        try {
-            Long id = this.requerimiento.getId();
-            this.requerimiento = requerimientoDao.getById(id);
-            requerimiento.setEstado(Requerimiento.Estado.Rechazado);
-
-            requerimientoDao.update(requerimiento);
-            addInfoMessage("Requerimiento rechazado");
-            return "/pages/requerimientos/index.xhtml?faces-redirect=true";
-        } catch (Exception e) {
-            addErrorMessage("Error al rechazar requerimiento: " + e.getMessage());
+            logger.error("Error al aprobar: {}", e.getMessage(), e);
+            addErrorMessage("Error al aprobar requerimiento");
             return null;
         }
     }
@@ -445,24 +400,21 @@ public class RequerimientoBean implements Serializable {
         try {
             Long id = this.requerimiento.getId();
             this.requerimiento = requerimientoDao.getById(id);
-
-            // Eliminar detalles primero
             detalleRequerimientoDao.deleteByRequerimiento(id);
-
-            // Eliminar requerimiento
             requerimientoDao.delete(requerimiento);
 
             addInfoMessage("Requerimiento eliminado");
             return "/pages/requerimientos/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al eliminar requerimiento: " + e.getMessage());
+            logger.error("Error al eliminar: {}", e.getMessage(), e);
+            addErrorMessage("Error al eliminar requerimiento");
             return null;
         }
     }
 
     public String add() {
         limpiarFormulario();
-        return "/pages/requerimientos/add?faces-redirect=true";
+        return "/pages/requerimientos/add.xhtml?faces-redirect=true";
     }
 
     public String edit() {
@@ -483,12 +435,11 @@ public class RequerimientoBean implements Serializable {
                 this.centroCostoId = requerimiento.getCentroCosto().getId();
             }
 
-            // Cargar detalles
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-
-            return "/pages/requerimientos/edit";
+            return "/pages/requerimientos/edit.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al cargar requerimiento: " + e.getMessage());
+            logger.error("Error al cargar requerimiento: {}", e.getMessage(), e);
+            addErrorMessage("Error al cargar requerimiento");
             return null;
         }
     }
@@ -497,13 +448,11 @@ public class RequerimientoBean implements Serializable {
         try {
             Long id = this.requerimiento.getId();
             this.requerimiento = requerimientoDao.getById(id);
-
-            // Cargar detalles
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-
-            return "/pages/requerimientos/show";
+            return "/pages/requerimientos/show.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al cargar requerimiento: " + e.getMessage());
+            logger.error("Error al cargar: {}", e.getMessage(), e);
+            addErrorMessage("Error al cargar requerimiento");
             return null;
         }
     }
@@ -512,29 +461,26 @@ public class RequerimientoBean implements Serializable {
         try {
             Long id = this.requerimiento.getId();
             this.requerimiento = requerimientoDao.getById(id);
-
-            // Cargar detalles
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-
-            return "/pages/requerimientos/aprobar";
+            return "/pages/requerimientos/aprobar.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            addErrorMessage("Error al cargar requerimiento: " + e.getMessage());
+            logger.error("Error: {}", e.getMessage(), e);
+            addErrorMessage("Error al cargar requerimiento");
             return null;
         }
     }
 
     public String index() {
-        return "/pages/requerimientos/index";
+        return "/pages/requerimientos/index.xhtml?faces-redirect=true";
     }
 
-    // Métodos de validación
     private boolean validarRequerimiento() {
         if (solicitanteId == null) {
             addErrorMessage("Debe seleccionar un solicitante");
             return false;
         }
         if (detalles == null || detalles.isEmpty()) {
-            addErrorMessage("Debe agregar al menos un ítem al requerimiento");
+            addErrorMessage("Debe agregar al menos un ítem");
             return false;
         }
         return true;
@@ -551,7 +497,6 @@ public class RequerimientoBean implements Serializable {
         limpiarDetalleTemp();
     }
 
-    // Métodos de mensajes
     private void addInfoMessage(String mensaje) {
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", mensaje));

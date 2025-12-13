@@ -12,17 +12,14 @@
 
         <ui:define name="content">
             <h:form id="formMateriales">
-                <p:messages id="messages" showDetail="true" closable="true">
-                    <p:autoUpdate />
-                </p:messages>
+                <p:messages id="messages" showDetail="true" closable="true"/>
 
                 <div class="action-header">
                     <h3><i class="pi pi-box"></i> Catálogo de Materiales</h3>
                     <p:commandButton value="Nuevo Material" 
                                    icon="pi pi-plus"
                                    action="#{materialBean.add}" 
-                                   styleClass="btn-nuevo"
-                                   ajax="false"/>
+                                   styleClass="btn-nuevo"/>
                 </div>
 
                 <div class="table-container">
@@ -33,8 +30,7 @@
                                paginator="true"
                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords}"
-                               emptyMessage="No hay materiales registrados"
-                               lazy="false">
+                               emptyMessage="No hay materiales registrados">
 
                         <p:column headerText="Código" style="width: 80px; text-align: center">
                             <h:outputText value="#{m.codcorrelativo}"/>
@@ -69,16 +65,14 @@
                                 <p:commandButton icon="pi pi-pencil" 
                                                action="#{materialBean.edit}"  
                                                styleClass="btn-edit"
-                                               title="Editar"
-                                               ajax="false">
+                                               title="Editar">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
                                 <p:commandButton icon="pi pi-eye" 
                                                action="#{materialBean.show}"  
                                                styleClass="btn-view"
-                                               title="Ver"
-                                               ajax="false">
+                                               title="Ver">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
@@ -86,8 +80,7 @@
                                                action="#{materialBean.erase}" 
                                                styleClass="btn-delete"
                                                title="Eliminar"
-                                               onclick="return confirm('¿Está seguro de eliminar este material?')"
-                                               ajax="false">
+                                               onclick="return confirm('¿Está seguro de eliminar este material?')">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
                             </div>
