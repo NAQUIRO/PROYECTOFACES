@@ -21,16 +21,17 @@ public class MaterialDao extends JPA implements DAO<Material> {
                 if (id == null || id <= 0) {
                     throw new IllegalArgumentException("ID inválido");
                 }
-                Material material = em.find(Material.class, id);
-                // Inicializar relaciones lazy si existen
-                if (material != null) {
-                    if (material.getGrupo() != null) {
-                        material.getGrupo().getId();
-                    }
-                    if (material.getUnidad() != null) {
-                        material.getUnidad().getId();
-                    }
-                }
+                
+                // Usar LEFT JOIN FETCH para cargar las relaciones
+                Material material = em.createQuery(
+                    "SELECT m FROM Material m " +
+                    "LEFT JOIN FETCH m.grupo " +
+                    "LEFT JOIN FETCH m.unidad " +
+                    "WHERE m.id = :id", 
+                    Material.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+                    
                 return material;
             } catch (Exception e) {
                 logger.error("Error al buscar material: {}", e.getMessage(), e);
@@ -43,10 +44,17 @@ public class MaterialDao extends JPA implements DAO<Material> {
     public List<Material> getAll() {
         return executeQueryList(em -> {
             try {
-                return em.createQuery(
-                        "SELECT m FROM Material m ORDER BY m.id DESC",
-                        Material.class)
-                        .getResultList();
+                // Usar LEFT JOIN FETCH para cargar todas las relaciones
+                List<Material> materiales = em.createQuery(
+                    "SELECT DISTINCT m FROM Material m " +
+                    "LEFT JOIN FETCH m.grupo " +
+                    "LEFT JOIN FETCH m.unidad " +
+                    "ORDER BY m.id DESC",
+                    Material.class)
+                    .getResultList();
+                    
+                logger.info("Materiales encontrados: {}", materiales.size());
+                return materiales;
             } catch (Exception e) {
                 logger.error("Error al obtener materiales: {}", e.getMessage(), e);
                 throw new RuntimeException("Error al obtener materiales", e);
@@ -58,9 +66,13 @@ public class MaterialDao extends JPA implements DAO<Material> {
         return executeQueryList(em -> {
             try {
                 return em.createQuery(
-                        "SELECT m FROM Material m WHERE m.estado = 'Activo' ORDER BY m.nombre",
-                        Material.class)
-                        .getResultList();
+                    "SELECT DISTINCT m FROM Material m " +
+                    "LEFT JOIN FETCH m.grupo " +
+                    "LEFT JOIN FETCH m.unidad " +
+                    "WHERE m.estado = 'Activo' " +
+                    "ORDER BY m.nombre",
+                    Material.class)
+                    .getResultList();
             } catch (Exception e) {
                 logger.error("Error al obtener materiales activos: {}", e.getMessage(), e);
                 throw new RuntimeException("Error al obtener materiales activos", e);

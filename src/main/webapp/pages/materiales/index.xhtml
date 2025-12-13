@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -15,23 +11,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <ui:define name="pageTitle">Gestión de Materiales</ui:define>
 
         <ui:define name="content">
-            <h:form>
+            <h:form id="formMateriales">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
                 <div class="action-header">
                     <h3><i class="pi pi-box"></i> Catálogo de Materiales</h3>
                     <p:commandButton value="Nuevo Material" 
                                    icon="pi pi-plus"
                                    action="#{materialBean.add}" 
-                                   styleClass="btn-nuevo"/>
+                                   styleClass="btn-nuevo"
+                                   ajax="false"/>
                 </div>
 
                 <div class="table-container">
-                    <p:dataTable value="#{materialBean.getAll()}" 
+                    <p:dataTable id="tablaMateriales"
+                               value="#{materialBean.all}" 
                                var="m" 
                                rows="10"
                                paginator="true"
                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords}"
-                               emptyMessage="No hay materiales registrados">
+                               emptyMessage="No hay materiales registrados"
+                               lazy="false">
 
                         <p:column headerText="Código" style="width: 80px; text-align: center">
                             <h:outputText value="#{m.codcorrelativo}"/>
@@ -42,11 +45,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         </p:column>
 
                         <p:column headerText="Grupo" style="width: 200px">
-                            <h:outputText value="#{m.grupo.nombre}"/>
+                            <h:outputText value="#{m.grupo != null ? m.grupo.nombre : 'Sin grupo'}"/>
                         </p:column>
 
                         <p:column headerText="Unidad" style="width: 100px; text-align: center">
-                            <h:outputText value="#{m.unidad.abreviatura}"/>
+                            <h:outputText value="#{m.unidad != null ? m.unidad.abreviatura : 'Sin unidad'}"/>
                         </p:column>
 
                         <p:column headerText="Fecha Creación" style="width: 130px; text-align: center">
@@ -66,14 +69,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 <p:commandButton icon="pi pi-pencil" 
                                                action="#{materialBean.edit}"  
                                                styleClass="btn-edit"
-                                               title="Editar">
+                                               title="Editar"
+                                               ajax="false">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
                                 <p:commandButton icon="pi pi-eye" 
                                                action="#{materialBean.show}"  
                                                styleClass="btn-view"
-                                               title="Ver">
+                                               title="Ver"
+                                               ajax="false">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
@@ -81,7 +86,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                                action="#{materialBean.erase}" 
                                                styleClass="btn-delete"
                                                title="Eliminar"
-                                               onclick="return confirm('¿Está seguro de eliminar este material?')">
+                                               onclick="return confirm('¿Está seguro de eliminar este material?')"
+                                               ajax="false">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
                             </div>

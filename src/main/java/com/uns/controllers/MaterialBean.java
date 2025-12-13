@@ -6,6 +6,7 @@ import com.uns.data.UnidadDao;
 import com.uns.entities.Material;
 import com.uns.entities.Grupo;
 import com.uns.entities.Unidad;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("materialBean")
@@ -36,7 +38,30 @@ public class MaterialBean implements Serializable {
     private Material material = new Material();
     private Long grupoId;
     private Long unidadId;
+    private List<Material> materiales;
 
+    @PostConstruct
+    public void init() {
+        logger.info("Inicializando MaterialBean...");
+        material = new Material();
+        cargarMateriales();
+    }
+
+    private void cargarMateriales() {
+        try {
+            materiales = materialDao.getAll();
+            if (materiales == null) {
+                materiales = new ArrayList<>();
+            }
+            logger.info("Materiales cargados: {}", materiales.size());
+        } catch (Exception e) {
+            logger.error("Error al cargar materiales: {}", e.getMessage(), e);
+            materiales = new ArrayList<>();
+            addErrorMessage("Error", "No se pudieron cargar los materiales: " + e.getMessage());
+        }
+    }
+
+    // Getters
     public Material getMaterial() {
         return material;
     }
@@ -61,41 +86,41 @@ public class MaterialBean implements Serializable {
         this.unidadId = unidadId;
     }
 
+    // Métodos de listado
     public List<Material> getAll() {
-        try {
-            List<Material> result = materialDao.getAll();
-            return result != null ? result : List.of();
-        } catch (Exception e) {
-            logger.error("Error al obtener materiales: {}", e.getMessage(), e);
-            addErrorMessage("Error", "No se pudieron cargar los materiales");
-            return List.of();
+        if (materiales == null) {
+            cargarMateriales();
         }
+        return materiales;
     }
 
     public List<Grupo> getAllGrupos() {
         try {
             List<Grupo> result = grupoDao.getAllActivos();
-            return result != null ? result : List.of();
+            return result != null ? result : new ArrayList<>();
         } catch (Exception e) {
             logger.error("Error al obtener grupos: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar los grupos");
-            return List.of();
+            return new ArrayList<>();
         }
     }
 
     public List<Unidad> getAllUnidades() {
         try {
             List<Unidad> result = unidadDao.getAllActivos();
-            return result != null ? result : List.of();
+            return result != null ? result : new ArrayList<>();
         } catch (Exception e) {
             logger.error("Error al obtener unidades: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudieron cargar las unidades");
-            return List.of();
+            return new ArrayList<>();
         }
     }
 
+    // Operaciones CRUD
     public String create() {
         try {
+            logger.info("Creando material: {}", material.getNombre());
+            
             // Validaciones
             if (material.getNombre() == null || material.getNombre().trim().isEmpty()) {
                 addErrorMessage("Validación", "El nombre es requerido");
@@ -131,17 +156,26 @@ public class MaterialBean implements Serializable {
 
             materialDao.create(material);
             addInfoMessage("Éxito", "Material creado correctamente");
-            logger.info("Material creado: {}", material.getNombre());
+            logger.info("Material creado exitosamente: ID={}", material.getId());
+            
+            // Limpiar y recargar
+            material = new Material();
+            grupoId = null;
+            unidadId = null;
+            cargarMateriales();
+            
             return "/pages/materiales/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al crear material: {}", e.getMessage(), e);
-            addErrorMessage("Error", "No se pudo crear el material");
+            addErrorMessage("Error", "No se pudo crear el material: " + e.getMessage());
             return null;
         }
     }
 
     public String update() {
         try {
+            logger.info("Actualizando material ID: {}", material.getId());
+            
             // Validaciones
             if (material.getNombre() == null || material.getNombre().trim().isEmpty()) {
                 addErrorMessage("Validación", "El nombre es requerido");
@@ -175,10 +209,17 @@ public class MaterialBean implements Serializable {
             materialDao.update(material);
             addInfoMessage("Éxito", "Material actualizado correctamente");
             logger.info("Material actualizado: {}", material.getNombre());
+            
+            // Limpiar y recargar
+            material = new Material();
+            grupoId = null;
+            unidadId = null;
+            cargarMateriales();
+            
             return "/pages/materiales/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al actualizar material: {}", e.getMessage(), e);
-            addErrorMessage("Error", "No se pudo actualizar el material");
+            addErrorMessage("Error", "No se pudo actualizar el material: " + e.getMessage());
             return null;
         }
     }
@@ -186,40 +227,58 @@ public class MaterialBean implements Serializable {
     public String erase() {
         try {
             Long id = this.material.getId();
+            logger.info("Eliminando material ID: {}", id);
+            
             this.material = materialDao.getById(id);
             if (material == null) {
                 addErrorMessage("Error", "Material no encontrado");
                 return null;
             }
+            
             materialDao.delete(material);
             addInfoMessage("Éxito", "Material eliminado correctamente");
             logger.info("Material eliminado: {}", id);
+            
+            // Limpiar y recargar
+            material = new Material();
+            grupoId = null;
+            unidadId = null;
+            cargarMateriales();
+            
             return "/pages/materiales/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al eliminar material: {}", e.getMessage(), e);
-            addErrorMessage("Error", "No se pudo eliminar el material");
+            addErrorMessage("Error", "No se pudo eliminar el material: " + e.getMessage());
             return null;
         }
     }
 
+    // Navegación
     public String add() {
+        material = new Material();
+        grupoId = null;
+        unidadId = null;
         return "/pages/materiales/add?faces-redirect=true";
     }
 
     public String edit() {
         try {
             Long id = this.material.getId();
+            logger.info("Cargando material para editar ID: {}", id);
+            
             this.material = materialDao.getById(id);
             if (material == null) {
                 addErrorMessage("Error", "Material no encontrado");
                 return "/pages/materiales/index?faces-redirect=true";
             }
+            
             if (material.getGrupo() != null) {
                 this.grupoId = material.getGrupo().getId();
             }
             if (material.getUnidad() != null) {
                 this.unidadId = material.getUnidad().getId();
             }
+            
             return "/pages/materiales/edit";
         } catch (Exception e) {
             logger.error("Error al cargar material para edición: {}", e.getMessage(), e);
@@ -231,6 +290,8 @@ public class MaterialBean implements Serializable {
     public String show() {
         try {
             Long id = this.material.getId();
+            logger.info("Mostrando material ID: {}", id);
+            
             this.material = materialDao.getById(id);
             if (material == null) {
                 addErrorMessage("Error", "Material no encontrado");
@@ -245,9 +306,11 @@ public class MaterialBean implements Serializable {
     }
 
     public String index() {
+        cargarMateriales();
         return "/pages/materiales/index";
     }
 
+    // Métodos de mensajes
     private void addInfoMessage(String summary, String detail) {
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail));
