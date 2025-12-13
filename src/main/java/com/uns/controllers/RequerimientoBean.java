@@ -328,7 +328,7 @@ public class RequerimientoBean implements Serializable {
 
             addInfoMessage("Requerimiento creado exitosamente");
             limpiarFormulario();
-            return "/pages/requerimientos/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al crear requerimiento: {}", e.getMessage(), e);
             addErrorMessage("Error al crear requerimiento");
@@ -371,7 +371,7 @@ public class RequerimientoBean implements Serializable {
             }
 
             addInfoMessage("Requerimiento actualizado exitosamente");
-            return "/pages/requerimientos/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al actualizar requerimiento: {}", e.getMessage(), e);
             addErrorMessage("Error al actualizar requerimiento");
@@ -388,7 +388,7 @@ public class RequerimientoBean implements Serializable {
 
             requerimientoDao.update(requerimiento);
             addInfoMessage("Requerimiento aprobado");
-            return "/pages/requerimientos/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al aprobar: {}", e.getMessage(), e);
             addErrorMessage("Error al aprobar requerimiento");
@@ -404,7 +404,7 @@ public class RequerimientoBean implements Serializable {
             requerimientoDao.delete(requerimiento);
 
             addInfoMessage("Requerimiento eliminado");
-            return "/pages/requerimientos/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al eliminar: {}", e.getMessage(), e);
             addErrorMessage("Error al eliminar requerimiento");
@@ -414,7 +414,7 @@ public class RequerimientoBean implements Serializable {
 
     public String add() {
         limpiarFormulario();
-        return "/pages/requerimientos/add.xhtml?faces-redirect=true";
+        return "add?faces-redirect=true";
     }
 
     public String edit() {
@@ -436,7 +436,7 @@ public class RequerimientoBean implements Serializable {
             }
 
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-            return "/pages/requerimientos/edit.xhtml?faces-redirect=true";
+            return "edit?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al cargar requerimiento: {}", e.getMessage(), e);
             addErrorMessage("Error al cargar requerimiento");
@@ -449,7 +449,7 @@ public class RequerimientoBean implements Serializable {
             Long id = this.requerimiento.getId();
             this.requerimiento = requerimientoDao.getById(id);
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-            return "/pages/requerimientos/show.xhtml?faces-redirect=true";
+            return "show?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al cargar: {}", e.getMessage(), e);
             addErrorMessage("Error al cargar requerimiento");
@@ -462,7 +462,7 @@ public class RequerimientoBean implements Serializable {
             Long id = this.requerimiento.getId();
             this.requerimiento = requerimientoDao.getById(id);
             this.detalles = detalleRequerimientoDao.getByRequerimiento(id);
-            return "/pages/requerimientos/aprobar.xhtml?faces-redirect=true";
+            return "aprobar?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error: {}", e.getMessage(), e);
             addErrorMessage("Error al cargar requerimiento");
@@ -471,7 +471,7 @@ public class RequerimientoBean implements Serializable {
     }
 
     public String index() {
-        return "/pages/requerimientos/index.xhtml?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
 
     private boolean validarRequerimiento() {

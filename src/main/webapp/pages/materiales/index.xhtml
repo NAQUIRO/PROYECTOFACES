@@ -19,7 +19,8 @@
                     <p:commandButton value="Nuevo Material" 
                                    icon="pi pi-plus"
                                    action="#{materialBean.add}" 
-                                   styleClass="btn-nuevo"/>
+                                   styleClass="btn-nuevo"
+                                   ajax="false"/>
                 </div>
 
                 <div class="table-container">
@@ -65,14 +66,16 @@
                                 <p:commandButton icon="pi pi-pencil" 
                                                action="#{materialBean.edit}"  
                                                styleClass="btn-edit"
-                                               title="Editar">
+                                               title="Editar"
+                                               ajax="false">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
                                 <p:commandButton icon="pi pi-eye" 
                                                action="#{materialBean.show}"  
                                                styleClass="btn-view"
-                                               title="Ver">
+                                               title="Ver"
+                                               ajax="false">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>
 
@@ -80,6 +83,7 @@
                                                action="#{materialBean.erase}" 
                                                styleClass="btn-delete"
                                                title="Eliminar"
+                                               ajax="false"
                                                onclick="return confirm('¿Está seguro de eliminar este material?')">
                                     <f:setPropertyActionListener value="#{m.id}" target="#{materialBean.material.id}"/>
                                 </p:commandButton>

@@ -48,15 +48,21 @@ public class OrdenCompraBean implements Serializable {
     @Inject
     private UnidadDao unidadDao;
 
-    private Orden_compra ordenCompra = new Orden_compra();
+    private Orden_compra ordenCompra;
     private Long proveedorId;
     private Long solicitanteId;
 
     // Gestión de detalles
-    private List<Detalle_orden_compra> detalles = new ArrayList<>();
-    private Detalle_orden_compra detalleTemp = new Detalle_orden_compra();
+    private List<Detalle_orden_compra> detalles;
+    private Detalle_orden_compra detalleTemp;
     private Long materialId;
     private Long unidadId;
+
+    public OrdenCompraBean() {
+        this.ordenCompra = new Orden_compra();
+        this.detalles = new ArrayList<>();
+        this.detalleTemp = new Detalle_orden_compra();
+    }
 
     @PostConstruct
     public void init() {
@@ -65,6 +71,9 @@ public class OrdenCompraBean implements Serializable {
 
     // Getters y Setters
     public Orden_compra getOrdenCompra() {
+        if (ordenCompra == null) {
+            ordenCompra = new Orden_compra();
+        }
         return ordenCompra;
     }
 
@@ -89,6 +98,9 @@ public class OrdenCompraBean implements Serializable {
     }
 
     public List<Detalle_orden_compra> getDetalles() {
+        if (detalles == null) {
+            detalles = new ArrayList<>();
+        }
         return detalles;
     }
 
@@ -97,6 +109,9 @@ public class OrdenCompraBean implements Serializable {
     }
 
     public Detalle_orden_compra getDetalleTemp() {
+        if (detalleTemp == null) {
+            detalleTemp = new Detalle_orden_compra();
+        }
         return detalleTemp;
     }
 
@@ -302,7 +317,7 @@ public class OrdenCompraBean implements Serializable {
 
             addInfoMessage("Orden de compra creada exitosamente");
             limpiarFormulario();
-            return "/pages/ordenes/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al crear orden de compra: " + e.getMessage());
             return null;
@@ -338,7 +353,7 @@ public class OrdenCompraBean implements Serializable {
             }
 
             addInfoMessage("Orden de compra actualizada exitosamente");
-            return "/pages/ordenes/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al actualizar orden de compra: " + e.getMessage());
             return null;
@@ -352,7 +367,7 @@ public class OrdenCompraBean implements Serializable {
             ordenCompra.setEstado(Orden_compra.Estado.Aprobado);
             ordenCompraDao.update(ordenCompra);
             addInfoMessage("Orden de compra aprobada");
-            return "/pages/ordenes/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al aprobar orden: " + e.getMessage());
             return null;
@@ -366,7 +381,7 @@ public class OrdenCompraBean implements Serializable {
             ordenCompra.setEstado(Orden_compra.Estado.Enviada);
             ordenCompraDao.update(ordenCompra);
             addInfoMessage("Orden de compra enviada");
-            return "/pages/ordenes/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al enviar orden: " + e.getMessage());
             return null;
@@ -385,7 +400,7 @@ public class OrdenCompraBean implements Serializable {
             ordenCompraDao.delete(ordenCompra);
 
             addInfoMessage("Orden de compra eliminada");
-            return "/pages/ordenes/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al eliminar orden: " + e.getMessage());
             return null;
@@ -394,7 +409,7 @@ public class OrdenCompraBean implements Serializable {
 
     public String add() {
         limpiarFormulario();
-        return "/pages/ordenes/add?faces-redirect=true";
+        return "add?faces-redirect=true";
     }
 
     public String edit() {
@@ -412,7 +427,7 @@ public class OrdenCompraBean implements Serializable {
             // Cargar detalles
             this.detalles = detalleOrdenCompraDao.getByOrdenCompra(id);
 
-            return "/pages/ordenes/edit";
+            return "edit?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al cargar orden: " + e.getMessage());
             return null;
@@ -427,7 +442,7 @@ public class OrdenCompraBean implements Serializable {
             // Cargar detalles
             this.detalles = detalleOrdenCompraDao.getByOrdenCompra(id);
 
-            return "/pages/ordenes/show";
+            return "show?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al cargar orden: " + e.getMessage());
             return null;
@@ -442,7 +457,7 @@ public class OrdenCompraBean implements Serializable {
             // Cargar detalles
             this.detalles = detalleOrdenCompraDao.getByOrdenCompra(id);
 
-            return "/pages/ordenes/imprimir";
+            return "imprimir?faces-redirect=true";
         } catch (Exception e) {
             addErrorMessage("Error al cargar orden: " + e.getMessage());
             return null;
@@ -450,7 +465,7 @@ public class OrdenCompraBean implements Serializable {
     }
 
     public String index() {
-        return "/pages/ordenes/index";
+        return "index?faces-redirect=true";
     }
 
     // Métodos de validación

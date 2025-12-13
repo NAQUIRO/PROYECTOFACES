@@ -1,346 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title><ui:insert name="title">Sistema de Gestión</ui:insert></title>
+        <title>
+            <ui:insert name="title">Sistema de Gestión</ui:insert>
+        </title>
         <h:outputStylesheet library="css" name="styles.css"/>
+
+        <!-- === ESTILOS === -->
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+            *{margin:0;padding:0;box-sizing:border-box}
+            body{
+                font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+                background:#f5f7fa;
+                color:#333
             }
 
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: #f5f7fa;
-                color: #333;
+            .sidebar{
+                position:fixed;
+                left:0;top:0;bottom:0;
+                width:260px;
+                background:linear-gradient(180deg,#2c3e50 0%,#34495e 100%);
+                color:white;
+                transition:.3s;
+                z-index:1000;
+                overflow-y:auto
             }
 
-            /* Sidebar */
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                width: 260px;
-                background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
-                color: white;
-                transition: all 0.3s ease;
-                z-index: 1000;
-                overflow-y: auto;
+            .sidebar.collapsed{width:70px}
+
+            .sidebar-header{
+                padding:25px 20px;
+                background:rgba(0,0,0,.2);
+                display:flex;
+                justify-content:space-between;
+                align-items:center
             }
 
-            .sidebar.collapsed {
-                width: 70px;
+            .toggle-btn{
+                background:none;
+                border:none;
+                color:white;
+                font-size:1.2em;
+                cursor:pointer
             }
 
-            .sidebar-header {
-                padding: 25px 20px;
-                background: rgba(0, 0, 0, 0.2);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+            .sidebar-menu{padding:20px 0}
+
+            .menu-section{margin-bottom:30px}
+
+            .menu-section-title{
+                padding:10px 20px;
+                font-size:.75em;
+                text-transform:uppercase;
+                color:rgba(255,255,255,.5);
+                font-weight:600
             }
 
-            .sidebar-header h2 {
-                font-size: 1.3em;
-                white-space: nowrap;
-                overflow: hidden;
-                transition: opacity 0.3s;
+            .menu-item{
+                display:flex;
+                align-items:center;
+                padding:15px 20px;
+                color:rgba(255,255,255,.85);
+                cursor:pointer;
+                transition:.3s
             }
 
-            .sidebar.collapsed .sidebar-header h2 {
-                opacity: 0;
+            .menu-item:hover{
+                background:rgba(255,255,255,.1);
+                color:#fff
             }
 
-            .toggle-btn {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.2em;
-                cursor: pointer;
-                padding: 5px;
+            .menu-item i{
+                width:30px;
+                text-align:center;
+                font-size:1.2em
             }
 
-            .sidebar-menu {
-                padding: 20px 0;
+            .menu-item span{margin-left:15px}
+
+            .main-content{
+                margin-left:260px;
+                min-height:100vh;
+                transition:.3s
             }
 
-            .menu-section {
-                margin-bottom: 30px;
+            .sidebar.collapsed ~ .main-content{margin-left:70px}
+
+            .topbar{
+                background:#fff;
+                padding:15px 30px;
+                box-shadow:0 2px 10px rgba(0,0,0,.05);
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                position:sticky;
+                top:0;
+                z-index:100
             }
 
-            .menu-section-title {
-                padding: 10px 20px;
-                font-size: 0.75em;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 600;
-            }
-
-            .sidebar.collapsed .menu-section-title {
-                opacity: 0;
-                height: 0;
-                padding: 0;
-            }
-
-            .menu-item {
-                display: flex;
-                align-items: center;
-                padding: 15px 20px;
-                color: rgba(255, 255, 255, 0.8);
-                text-decoration: none;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                position: relative;
-            }
-
-            .menu-item:hover {
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-            }
-
-            .menu-item.active {
-                background: rgba(102, 126, 234, 0.3);
-                color: white;
-                border-left: 4px solid #667eea;
-            }
-
-            .menu-item i {
-                font-size: 1.2em;
-                width: 30px;
-                text-align: center;
-            }
-
-            .menu-item span {
-                margin-left: 15px;
-                white-space: nowrap;
-                transition: opacity 0.3s;
-            }
-
-            .sidebar.collapsed .menu-item span {
-                opacity: 0;
-            }
-
-            /* Main Content */
-            .main-content {
-                margin-left: 260px;
-                transition: margin-left 0.3s ease;
-                min-height: 100vh;
-            }
-
-            .sidebar.collapsed ~ .main-content {
-                margin-left: 70px;
-            }
-
-            /* Top Bar */
-            .topbar {
-                background: white;
-                padding: 15px 30px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: sticky;
-                top: 0;
-                z-index: 100;
-            }
-
-            .topbar-left h1 {
-                font-size: 1.5em;
-                color: #2c3e50;
-            }
-
-            .topbar-right {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-            }
-
-            .user-info {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                padding: 8px 15px;
-                border-radius: 10px;
-                transition: background 0.3s;
-            }
-
-            .user-info:hover {
-                background: #f5f7fa;
-            }
-
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: bold;
-            }
-
-            .user-details {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .user-name {
-                font-weight: 600;
-                color: #2c3e50;
-            }
-
-            .user-role {
-                font-size: 0.85em;
-                color: #7f8c8d;
-            }
-
-            /* Content Area */
-            .content-area {
-                padding: 30px;
-            }
-
-            .page-header {
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 2px solid #e0e0e0;
-            }
-
-            .page-header h2 {
-                font-size: 2em;
-                color: #2c3e50;
-                margin-bottom: 5px;
-            }
-
-            .page-header p {
-                color: #7f8c8d;
-            }
-
-            /* Cards */
-            .card {
-                background: white;
-                border-radius: 15px;
-                box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-                padding: 25px;
-                margin-bottom: 25px;
-                transition: transform 0.3s, box-shadow 0.3s;
-            }
-
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
-            }
-
-            /* Buttons */
-            .ui-button {
-                border-radius: 8px !important;
-                padding: 10px 20px !important;
-                font-weight: 600 !important;
-                transition: all 0.3s ease !important;
-            }
-
-            .ui-button-success {
-                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
-                border: none !important;
-            }
-
-            .ui-button-danger {
-                background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important;
-                border: none !important;
-            }
-
-            .ui-button-warning {
-                background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%) !important;
-                border: none !important;
-            }
-
-            /* DataTable */
-            .ui-datatable {
-                border-radius: 15px !important;
-                overflow: hidden;
-            }
-
-            .ui-datatable thead th {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                color: white !important;
-                font-weight: 600 !important;
-                padding: 15px !important;
-            }
-
-            .ui-datatable tbody tr {
-                transition: background 0.3s;
-            }
-
-            .ui-datatable tbody tr:hover {
-                background: #f8f9fa !important;
-            }
-
-            /* Responsive */
-            @media (max-width: 768px) {
-                .sidebar {
-                    width: 70px;
-                }
-
-                .main-content {
-                    margin-left: 70px;
-                }
-
-                .topbar {
-                    padding: 15px;
-                }
-
-                .user-details {
-                    display: none;
-                }
-            }
-
-            /* Animations */
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .content-area > * {
-                animation: slideIn 0.5s ease-out;
-            }
+            .content-area{padding:30px}
         </style>
     </h:head>
 
     <h:body>
-        <!-- Sidebar -->
+
+        <!-- ================= SIDEBAR ================= -->
         <div class="sidebar" id="sidebar">
+
             <div class="sidebar-header">
                 <h2>SGC</h2>
-                <button class="toggle-btn" onclick="toggleSidebar()">
+                <button type="button" class="toggle-btn" onclick="toggleSidebar()">
                     <i class="pi pi-bars"></i>
                 </button>
             </div>
 
+            <!-- ===== MENÚ CORREGIDO INTEGRADO ===== -->
             <div class="sidebar-menu">
+
                 <div class="menu-section">
                     <div class="menu-section-title">Principal</div>
                     <h:form>
-                        <p:commandLink styleClass="menu-item" action="/pages/dashboard/index?faces-redirect=true">
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/dashboard/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-home"></i>
                             <span>Dashboard</span>
                         </p:commandLink>
@@ -350,22 +140,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <div class="menu-section">
                     <div class="menu-section-title">Gestión</div>
                     <h:form>
-                        <p:commandLink styleClass="menu-item" action="/pages/unidades/index?faces-redirect=true">
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/unidades/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-calculator"></i>
                             <span>Unidades</span>
                         </p:commandLink>
-                        
-                        <p:commandLink styleClass="menu-item" action="/pages/grupos/index?faces-redirect=true">
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/grupos/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-th-large"></i>
                             <span>Grupos</span>
                         </p:commandLink>
-                        
-                        <p:commandLink styleClass="menu-item" action="/pages/materiales/index?faces-redirect=true">
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/materiales/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-box"></i>
                             <span>Materiales</span>
                         </p:commandLink>
-                        
-                        <p:commandLink styleClass="menu-item" action="/pages/proveedores/index?faces-redirect=true">
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/proveedores/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-users"></i>
                             <span>Proveedores</span>
                         </p:commandLink>
@@ -375,12 +173,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <div class="menu-section">
                     <div class="menu-section-title">Operaciones</div>
                     <h:form>
-                        <p:commandLink styleClass="menu-item" action="/pages/requerimientos/index?faces-redirect=true">
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/requerimientos/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-file-edit"></i>
                             <span>Requerimientos</span>
                         </p:commandLink>
-                        
-                        <p:commandLink styleClass="menu-item" action="/pages/ordenes/index?faces-redirect=true">
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/ordenes/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-shopping-cart"></i>
                             <span>Órdenes de Compra</span>
                         </p:commandLink>
@@ -390,53 +192,47 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <div class="menu-section">
                     <div class="menu-section-title">Configuración</div>
                     <h:form>
-                        <p:commandLink styleClass="menu-item" action="/pages/usuarios/index?faces-redirect=true">
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/usuarios/index?faces-redirect=true"
+                                       ajax="false">
                             <i class="pi pi-user-edit"></i>
                             <span>Usuarios</span>
                         </p:commandLink>
-                        
-                        <p:commandLink styleClass="menu-item" action="#{loginBean.logout}">
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="#{loginBean.logout}"
+                                       ajax="false">
                             <i class="pi pi-sign-out"></i>
                             <span>Cerrar Sesión</span>
                         </p:commandLink>
                     </h:form>
                 </div>
+
             </div>
         </div>
+        <!-- ================= FIN SIDEBAR ================= -->
 
-        <!-- Main Content -->
+        <!-- ================= MAIN CONTENT ================= -->
         <div class="main-content">
-            <!-- Top Bar -->
+
             <div class="topbar">
-                <div class="topbar-left">
-                    <h1><ui:insert name="pageTitle">Sistema de Gestión</ui:insert></h1>
-                </div>
-
-                <div class="topbar-right">
-                    <div class="user-info">
-                        <div class="user-avatar">
-                            <h:outputText value="#{loginBean.usuarioActual.nombres.substring(0,1)}"/>
-                        </div>
-                        <div class="user-details">
-                            <span class="user-name">#{loginBean.nombreCompleto}</span>
-                            <span class="user-role">#{loginBean.usuarioActual.rol.nombre}</span>
-                        </div>
-                    </div>
-                </div>
+                <h1>
+                    <ui:insert name="pageTitle">Sistema de Gestión</ui:insert>
+                </h1>
             </div>
 
-            <!-- Content Area -->
             <div class="content-area">
-                <ui:insert name="content">
-                    <p>Contenido por defecto</p>
-                </ui:insert>
+                <ui:insert name="content"/>
             </div>
+
         </div>
 
-        <script>
+        <!-- ================= SCRIPT ================= -->
+        <script type="text/javascript">
             function toggleSidebar() {
                 document.getElementById('sidebar').classList.toggle('collapsed');
             }
         </script>
+
     </h:body>
 </html>

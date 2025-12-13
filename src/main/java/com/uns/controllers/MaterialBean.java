@@ -44,6 +44,9 @@ public class MaterialBean implements Serializable {
 
     public MaterialBean() {
         this.material = new Material();
+        this.materiales = new ArrayList<>();
+        this.grupos = new ArrayList<>();
+        this.unidades = new ArrayList<>();
     }
 
     @PostConstruct
@@ -200,7 +203,7 @@ public class MaterialBean implements Serializable {
             limpiar();
             cargarMateriales();
             
-            return "/pages/materiales/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al crear material: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudo crear el material: " + e.getMessage());
@@ -247,7 +250,7 @@ public class MaterialBean implements Serializable {
             limpiar();
             cargarMateriales();
             
-            return "/pages/materiales/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al actualizar material: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudo actualizar el material");
@@ -272,7 +275,7 @@ public class MaterialBean implements Serializable {
             limpiar();
             cargarMateriales();
             
-            return "/pages/materiales/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al eliminar material: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudo eliminar el material");
@@ -282,7 +285,7 @@ public class MaterialBean implements Serializable {
 
     public String add() {
         limpiar();
-        return "/pages/materiales/add.xhtml?faces-redirect=true";
+        return "add?faces-redirect=true";
     }
 
     public String edit() {
@@ -293,7 +296,7 @@ public class MaterialBean implements Serializable {
             this.material = materialDao.getById(id);
             if (material == null) {
                 addErrorMessage("Error", "Material no encontrado");
-                return "/pages/materiales/index.xhtml?faces-redirect=true";
+                return "index?faces-redirect=true";
             }
             
             if (material.getGrupo() != null) {
@@ -303,11 +306,11 @@ public class MaterialBean implements Serializable {
                 this.unidadId = material.getUnidad().getId();
             }
             
-            return "/pages/materiales/edit.xhtml?faces-redirect=true";
+            return "edit?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al cargar material: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudo cargar el material");
-            return "/pages/materiales/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         }
     }
 
@@ -319,19 +322,19 @@ public class MaterialBean implements Serializable {
             this.material = materialDao.getById(id);
             if (material == null) {
                 addErrorMessage("Error", "Material no encontrado");
-                return "/pages/materiales/index.xhtml?faces-redirect=true";
+                return "index?faces-redirect=true";
             }
-            return "/pages/materiales/show.xhtml?faces-redirect=true";
+            return "show?faces-redirect=true";
         } catch (Exception e) {
             logger.error("Error al cargar material: {}", e.getMessage(), e);
             addErrorMessage("Error", "No se pudo cargar el material");
-            return "/pages/materiales/index.xhtml?faces-redirect=true";
+            return "index?faces-redirect=true";
         }
     }
 
     public String index() {
         cargarMateriales();
-        return "/pages/materiales/index.xhtml?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
 
     private void limpiar() {
