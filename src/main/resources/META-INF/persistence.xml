@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+    xmlns="https://jakarta.ee/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+                        https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  
+  <persistence-unit name="bdjpa" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    
+    <!-- Listar TODAS las entidades explícitamente -->
+    <class>com.uns.entities.Unidad</class>
+    <class>com.uns.entities.Grupo</class>
+    <class>com.uns.entities.Material</class>
+    <class>com.uns.entities.Centro_costo</class>
+    <class>com.uns.entities.Area</class>
+    <class>com.uns.entities.Proyecto</class>
+    <class>com.uns.entities.Rol</class>
+    <class>com.uns.entities.Usuario</class>
+    <class>com.uns.entities.Proveedor</class>
+    <class>com.uns.entities.Requerimiento</class>
+    <class>com.uns.entities.Detalle_requerimiento</class>
+    <class>com.uns.entities.Orden_compra</class>
+    <class>com.uns.entities.Detalle_orden_compra</class>
+    
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+    <properties>
+      <!-- Configuración de conexión MySQL -->
+      <property name="jakarta.persistence.jdbc.url" 
+                value="jdbc:mysql://127.0.0.1:3306/dbprueba?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=America/Lima&amp;characterEncoding=UTF-8"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.password" value=""/>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      
+      <!-- Dialecto Hibernate para MySQL 8 -->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+      
+      <!-- Mostrar SQL en consola -->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.use_sql_comments" value="true"/>
+      
+      <!-- NO actualizar el esquema automáticamente -->
+      <property name="hibernate.hbm2ddl.auto" value="none"/>
+      
+      <!-- Deshabilitar bytecode enhancement -->
+      <property name="hibernate.enhancer.enableDirtyTracking" value="false"/>
+      <property name="hibernate.enhancer.enableLazyInitialization" value="false"/>
+      <property name="hibernate.enhancer.enableAssociationManagement" value="false"/>
+      
+      <!-- Pool de conexiones C3P0 -->
+      <property name="hibernate.c3p0.min_size" value="5"/>
+      <property name="hibernate.c3p0.max_size" value="20"/>
+      <property name="hibernate.c3p0.timeout" value="300"/>
+      <property name="hibernate.c3p0.max_statements" value="50"/>
+      <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+      
+      <!-- Logging -->
+      <property name="hibernate.generate_statistics" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>

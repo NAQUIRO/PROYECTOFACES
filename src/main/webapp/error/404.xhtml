@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>404 - Página no encontrada</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+            }
+            .error-container {
+                text-align: center;
+                color: white;
+                animation: fadeIn 0.5s ease-out;
+            }
+            .error-code {
+                font-size: 10em;
+                font-weight: bold;
+                margin: 0;
+                text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            }
+            .error-message {
+                font-size: 2em;
+                margin: 20px 0;
+            }
+            .error-description {
+                font-size: 1.2em;
+                opacity: 0.9;
+                margin-bottom: 30px;
+            }
+            .btn-home {
+                display: inline-block;
+                padding: 15px 40px;
+                background: white;
+                color: #667eea;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            .btn-home:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <p class="error-message">Página no encontrada</p>
+            <p class="error-description">La página que estás buscando no existe o ha sido movida.</p>
+            <a href="#{request.contextPath}/pages/dashboard/index.xhtml" class="btn-home">
+                Volver al inicio
+            </a>
+        </div>
+    </h:body>
+</html>

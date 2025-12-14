@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Usuarios</ui:define>
+        <ui:define name="pageTitle">Gestión de Usuarios</ui:define>
+
+        <ui:define name="content">
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-user-edit"></i> Administración de Usuarios</h3>
+                    <p:commandButton value="Nuevo Usuario" 
+                                   icon="pi pi-plus"
+                                   action="#{usuarioBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{usuarioBean.getAll()}" 
+                               var="u" 
+                               rows="10"
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                               emptyMessage="No hay usuarios registrados">
+
+                        <p:column headerText="Usuario" style="width: 120px">
+                            <h:outputText value="#{u.username}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombres">
+                            <h:outputText value="#{u.nombres}"/>
+                        </p:column>
+
+                        <p:column headerText="Apellidos">
+                            <h:outputText value="#{u.apellidos}"/>
+                        </p:column>
+
+                        <p:column headerText="Correo" style="width: 200px">
+                            <h:outputText value="#{u.correo}"/>
+                        </p:column>
+
+                        <p:column headerText="Rol" style="width: 120px">
+                            <h:outputText value="#{u.rol.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Área" style="width: 150px">
+                            <h:outputText value="#{u.area.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 100px; text-align: center">
+                            <span class="estado-badge #{u.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{u.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{usuarioBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{usuarioBean.usuario.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{usuarioBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{usuarioBean.usuario.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{usuarioBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Desactivar"
+                                               onclick="return confirm('¿Está seguro de desactivar este usuario?')">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{usuarioBean.usuario.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

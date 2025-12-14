@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Aprobar Requerimiento</ui:define>
+        <ui:define name="pageTitle">Aprobar Requerimiento</ui:define>
+
+        <ui:define name="content">
+            <div class="detail-card">
+                <div class="detail-header">
+                    <h2><i class="pi pi-check-circle"></i> Confirmar Aprobación</h2>
+                    <p>Revise la información detallada antes de aprobar la solicitud.</p>
+                </div>
+
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <div class="detail-label">Código:</div>
+                        <div class="detail-value">#{requerimientoBean.requerimiento.codigo}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Fecha Solicitud:</div>
+                        <div class="detail-value">
+                            <h:outputText value="#{requerimientoBean.requerimiento.fechaSolicitud}">
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Solicitante:</div>
+                        <div class="detail-value">
+                            #{requerimientoBean.requerimiento.solicitante.nombres} 
+                            #{requerimientoBean.requerimiento.solicitante.apellidos}
+                        </div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Proyecto:</div>
+                        <div class="detail-value">#{requerimientoBean.requerimiento.proyecto.nombre}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Área:</div>
+                        <div class="detail-value">#{requerimientoBean.requerimiento.area.nombre}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Centro de Costo:</div>
+                        <div class="detail-value">#{requerimientoBean.requerimiento.centroCosto.nombre}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Estado Actual:</div>
+                        <div class="detail-value">
+                            <span class="estado-badge estado-#{requerimientoBean.requerimiento.estado.toString().toLowerCase()}">
+                                #{requerimientoBean.requerimiento.estado}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Observaciones:</div>
+                        <div class="detail-value">#{requerimientoBean.requerimiento.observaciones}</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 20px; color: #2c3e50; padding-bottom: 15px; border-bottom: 2px solid #e0e0e0;">
+                        <i class="pi pi-list"></i> Materiales Solicitados
+                    </h3>
+                    
+                    <p:dataTable value="#{requerimientoBean.detalles}" 
+                               var="d"
+                               emptyMessage="No hay materiales en este requerimiento">
+                        
+                        <p:column headerText="Material">
+                            <h:outputText value="#{d.material.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Cantidad" style="width: 120px; text-align: center">
+                            <h:outputText value="#{d.cantidad}"/>
+                        </p:column>
+
+                        <p:column headerText="Unidad" style="width: 100px; text-align: center">
+                            <h:outputText value="#{d.unidad.abreviatura}"/>
+                        </p:column>
+
+                        <p:column headerText="Observación">
+                            <h:outputText value="#{d.observacion}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+
+                <div class="button-group">
+                    <h:form>
+                        <p:messages showDetail="true" closable="true"/>
+                        
+                        <p:commandButton value="Confirmar Aprobación" 
+                                       action="#{requerimientoBean.aprobar}" 
+                                       styleClass="btn-save"
+                                       icon="pi pi-check"
+                                       onclick="return confirm('¿Está seguro de aprobar este requerimiento?');"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       action="/pages/requerimientos/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       icon="pi pi-times"/>
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

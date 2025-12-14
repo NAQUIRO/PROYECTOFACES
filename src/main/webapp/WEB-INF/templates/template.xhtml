@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>
+            <ui:insert name="title">Sistema de Gestión</ui:insert>
+        </title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+
+        <!-- === ESTILOS === -->
+        <style>
+            *{margin:0;padding:0;box-sizing:border-box}
+            body{
+                font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+                background:#f5f7fa;
+                color:#333
+            }
+
+            .sidebar{
+                position:fixed;
+                left:0;top:0;bottom:0;
+                width:260px;
+                background:linear-gradient(180deg,#2c3e50 0%,#34495e 100%);
+                color:white;
+                transition:.3s;
+                z-index:1000;
+                overflow-y:auto
+            }
+
+            .sidebar.collapsed{width:70px}
+
+            .sidebar-header{
+                padding:25px 20px;
+                background:rgba(0,0,0,.2);
+                display:flex;
+                justify-content:space-between;
+                align-items:center
+            }
+
+            .toggle-btn{
+                background:none;
+                border:none;
+                color:white;
+                font-size:1.2em;
+                cursor:pointer
+            }
+
+            .sidebar-menu{padding:20px 0}
+
+            .menu-section{margin-bottom:30px}
+
+            .menu-section-title{
+                padding:10px 20px;
+                font-size:.75em;
+                text-transform:uppercase;
+                color:rgba(255,255,255,.5);
+                font-weight:600
+            }
+
+            .menu-item{
+                display:flex;
+                align-items:center;
+                padding:15px 20px;
+                color:rgba(255,255,255,.85);
+                cursor:pointer;
+                transition:.3s
+            }
+
+            .menu-item:hover{
+                background:rgba(255,255,255,.1);
+                color:#fff
+            }
+
+            .menu-item i{
+                width:30px;
+                text-align:center;
+                font-size:1.2em
+            }
+
+            .menu-item span{margin-left:15px}
+
+            .main-content{
+                margin-left:260px;
+                min-height:100vh;
+                transition:.3s
+            }
+
+            .sidebar.collapsed ~ .main-content{margin-left:70px}
+
+            .topbar{
+                background:#fff;
+                padding:15px 30px;
+                box-shadow:0 2px 10px rgba(0,0,0,.05);
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                position:sticky;
+                top:0;
+                z-index:100
+            }
+
+            .content-area{padding:30px}
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <!-- ================= SIDEBAR ================= -->
+        <div class="sidebar" id="sidebar">
+
+            <div class="sidebar-header">
+                <h2>SGC</h2>
+                <button type="button" class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="pi pi-bars"></i>
+                </button>
+            </div>
+
+            <!-- ===== MENÚ CORREGIDO INTEGRADO ===== -->
+            <div class="sidebar-menu">
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Principal</div>
+                    <h:form>
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/dashboard/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-home"></i>
+                            <span>Dashboard</span>
+                        </p:commandLink>
+                    </h:form>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Gestión</div>
+                    <h:form>
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/unidades/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-calculator"></i>
+                            <span>Unidades</span>
+                        </p:commandLink>
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/grupos/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-th-large"></i>
+                            <span>Grupos</span>
+                        </p:commandLink>
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/materiales/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-box"></i>
+                            <span>Materiales</span>
+                        </p:commandLink>
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/proveedores/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-users"></i>
+                            <span>Proveedores</span>
+                        </p:commandLink>
+                    </h:form>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Operaciones</div>
+                    <h:form>
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/requerimientos/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-file-edit"></i>
+                            <span>Requerimientos</span>
+                        </p:commandLink>
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/ordenes/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-shopping-cart"></i>
+                            <span>Órdenes de Compra</span>
+                        </p:commandLink>
+                    </h:form>
+                </div>
+
+                <div class="menu-section">
+                    <div class="menu-section-title">Configuración</div>
+                    <h:form>
+                        <p:commandLink styleClass="menu-item"
+                                       action="/pages/usuarios/index?faces-redirect=true"
+                                       ajax="false">
+                            <i class="pi pi-user-edit"></i>
+                            <span>Usuarios</span>
+                        </p:commandLink>
+
+                        <p:commandLink styleClass="menu-item"
+                                       action="#{loginBean.logout}"
+                                       ajax="false">
+                            <i class="pi pi-sign-out"></i>
+                            <span>Cerrar Sesión</span>
+                        </p:commandLink>
+                    </h:form>
+                </div>
+
+            </div>
+        </div>
+        <!-- ================= FIN SIDEBAR ================= -->
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <div class="main-content">
+
+            <div class="topbar">
+                <h1>
+                    <ui:insert name="pageTitle">Sistema de Gestión</ui:insert>
+                </h1>
+            </div>
+
+            <div class="content-area">
+                <ui:insert name="content"/>
+            </div>
+
+        </div>
+
+        <!-- ================= SCRIPT ================= -->
+        <script type="text/javascript">
+            function toggleSidebar() {
+                document.getElementById('sidebar').classList.toggle('collapsed');
+            }
+        </script>
+
+    </h:body>
+</html>

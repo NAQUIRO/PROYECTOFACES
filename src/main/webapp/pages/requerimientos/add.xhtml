@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Nuevo Requerimiento</ui:define>
+        <ui:define name="pageTitle">Nuevo Requerimiento de Compra</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-plus-circle"></i> Nuevo Requerimiento</h2>
+                    <p>Complete los datos del requerimiento de compra</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="codigo">Código <span class="required-mark">*</span></label>
+                        <p:inputText id="codigo" 
+                                   value="#{requerimientoBean.requerimiento.codigo}" 
+                                   placeholder="Código del requerimiento"
+                                   required="true"
+                                   maxlength="20"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="solicitante">Solicitante <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="solicitante" 
+                                       value="#{requerimientoBean.solicitanteId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un solicitante" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allUsuarios}" 
+                                         var="u" 
+                                         itemLabel="#{u.nombres} #{u.apellidos}" 
+                                         itemValue="#{u.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proyecto">Proyecto</label>
+                        <p:selectOneMenu id="proyecto" 
+                                       value="#{requerimientoBean.proyectoId}">
+                            <f:selectItem itemLabel="Seleccione un proyecto" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allProyectos}" 
+                                         var="p" 
+                                         itemLabel="#{p.nombre}" 
+                                         itemValue="#{p.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Área <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="area" 
+                                       value="#{requerimientoBean.areaId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un área" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allAreas}" 
+                                         var="a" 
+                                         itemLabel="#{a.nombre}" 
+                                         itemValue="#{a.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="centroCosto">Centro de Costo</label>
+                        <p:selectOneMenu id="centroCosto" 
+                                       value="#{requerimientoBean.centroCostoId}">
+                            <f:selectItem itemLabel="Seleccione un centro de costo" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allCentrosCosto}" 
+                                         var="cc" 
+                                         itemLabel="#{cc.nombre}" 
+                                         itemValue="#{cc.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="etapa">Etapa</label>
+                        <p:inputText id="etapa" 
+                                   value="#{requerimientoBean.requerimiento.etapa}" 
+                                   placeholder="Etapa del proyecto"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <p:inputTextarea id="observaciones" 
+                                       value="#{requerimientoBean.requerimiento.observaciones}" 
+                                       placeholder="Observaciones adicionales"
+                                       rows="4"
+                                       maxlength="255"/>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Guardar" 
+                                       icon="pi pi-check"
+                                       action="#{requerimientoBean.create}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/requerimientos/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

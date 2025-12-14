@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Proveedores</ui:define>
+        <ui:define name="pageTitle">Gestión de Proveedores</ui:define>
+
+        <ui:define name="content">
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-users"></i> Directorio de Proveedores</h3>
+                    <p:commandButton value="Nuevo Proveedor" 
+                                   icon="pi pi-plus"
+                                   action="#{proveedorBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{proveedorBean.getAll()}" 
+                               var="p" 
+                               rows="10"
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                               emptyMessage="No hay proveedores registrados">
+
+                        <p:column headerText="RUC" style="width: 120px">
+                            <h:outputText value="#{p.ruc}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{p.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Contacto" style="width: 150px">
+                            <h:outputText value="#{p.contacto}"/>
+                        </p:column>
+
+                        <p:column headerText="Teléfono" style="width: 120px">
+                            <h:outputText value="#{p.telefono}"/>
+                        </p:column>
+
+                        <p:column headerText="Correo" style="width: 180px">
+                            <h:outputText value="#{p.correo}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 100px; text-align: center">
+                            <span class="estado-badge #{p.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{p.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{proveedorBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proveedorBean.proveedor.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{proveedorBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proveedorBean.proveedor.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{proveedorBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Está seguro de eliminar este proveedor?')">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proveedorBean.proveedor.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Editar Requerimiento</ui:define>
+        <ui:define name="pageTitle">Editar Requerimiento de Compra</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-pencil"></i> Editar Requerimiento</h2>
+                    <p>Modifique los datos del requerimiento de compra</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="codigo">Código <span class="required-mark">*</span></label>
+                        <p:inputText id="codigo" 
+                                   value="#{requerimientoBean.requerimiento.codigo}" 
+                                   placeholder="Código del requerimiento"
+                                   required="true"
+                                   maxlength="20"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="solicitante">Solicitante <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="solicitante" 
+                                       value="#{requerimientoBean.solicitanteId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un solicitante" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allUsuarios}" 
+                                         var="u" 
+                                         itemLabel="#{u.nombres} #{u.apellidos}" 
+                                         itemValue="#{u.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proyecto">Proyecto</label>
+                        <p:selectOneMenu id="proyecto" 
+                                       value="#{requerimientoBean.proyectoId}">
+                            <f:selectItem itemLabel="Seleccione un proyecto" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allProyectos}" 
+                                         var="p" 
+                                         itemLabel="#{p.nombre}" 
+                                         itemValue="#{p.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Área</label>
+                        <p:selectOneMenu id="area" 
+                                       value="#{requerimientoBean.areaId}">
+                            <f:selectItem itemLabel="Seleccione un área" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allAreas}" 
+                                         var="a" 
+                                         itemLabel="#{a.nombre}" 
+                                         itemValue="#{a.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="centroCosto">Centro de Costo</label>
+                        <p:selectOneMenu id="centroCosto" 
+                                       value="#{requerimientoBean.centroCostoId}">
+                            <f:selectItem itemLabel="Seleccione un centro de costo" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{requerimientoBean.allCentrosCosto}" 
+                                         var="cc" 
+                                         itemLabel="#{cc.nombre}" 
+                                         itemValue="#{cc.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="etapa">Etapa</label>
+                        <p:inputText id="etapa" 
+                                   value="#{requerimientoBean.requerimiento.etapa}" 
+                                   placeholder="Etapa del proyecto"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <p:inputTextarea id="observaciones" 
+                                       value="#{requerimientoBean.requerimiento.observaciones}" 
+                                       placeholder="Observaciones adicionales"
+                                       rows="4"
+                                       maxlength="255"/>
+                    </div>
+
+                    <!-- Sección de Detalles -->
+                    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;">
+                            <i class="pi pi-list"></i> Materiales del Requerimiento
+                        </h3>
+
+                        <!-- Formulario para agregar detalles -->
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 15px;">Agregar Material</h4>
+                            
+                            <div class="form-group">
+                                <label for="material">Material <span class="required-mark">*</span></label>
+                                <p:selectOneMenu id="material" value="#{requerimientoBean.materialId}">
+                                    <f:selectItem itemLabel="Seleccione un material" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{requerimientoBean.allMateriales}" 
+                                                 var="m" 
+                                                 itemLabel="#{m.nombre}" 
+                                                 itemValue="#{m.id}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="unidad">Unidad <span class="required-mark">*</span></label>
+                                <p:selectOneMenu id="unidad" value="#{requerimientoBean.unidadId}">
+                                    <f:selectItem itemLabel="Seleccione una unidad" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{requerimientoBean.allUnidades}" 
+                                                 var="u" 
+                                                 itemLabel="#{u.abreviatura} - #{u.descripcion}" 
+                                                 itemValue="#{u.id}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad <span class="required-mark">*</span></label>
+                                <p:inputNumber id="cantidad" 
+                                             value="#{requerimientoBean.detalleTemp.cantidad}"
+                                             decimalPlaces="2"
+                                             minValue="0.01"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="observacionDetalle">Observación</label>
+                                <p:inputTextarea id="observacionDetalle" 
+                                               value="#{requerimientoBean.detalleTemp.observacion}"
+                                               rows="2"
+                                               maxlength="255"/>
+                            </div>
+
+                            <p:commandButton value="Agregar Material" 
+                                           icon="pi pi-plus"
+                                           action="#{requerimientoBean.agregarDetalle}"
+                                           update="form"
+                                           styleClass="btn-save"
+                                           style="width: auto; margin-top: 10px;"/>
+                        </div>
+
+                        <!-- Tabla de detalles -->
+                        <p:dataTable value="#{requerimientoBean.detalles}" 
+                                   var="d"
+                                   emptyMessage="No hay materiales agregados">
+                            
+                            <p:column headerText="Material">
+                                <h:outputText value="#{d.material.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad" style="width: 120px; text-align: center">
+                                <h:outputText value="#{d.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad" style="width: 100px; text-align: center">
+                                <h:outputText value="#{d.unidad.abreviatura}"/>
+                            </p:column>
+
+                            <p:column headerText="Observación">
+                                <h:outputText value="#{d.observacion}"/>
+                            </p:column>
+
+                            <p:column headerText="Acción" style="width: 100px; text-align: center">
+                                <p:commandButton icon="pi pi-trash"
+                                               action="#{requerimientoBean.eliminarDetalle(d)}"
+                                               update="form"
+                                               styleClass="btn-delete"
+                                               title="Eliminar">
+                                    <f:setPropertyActionListener value="#{d}" target="#{requerimientoBean.detalleTemp}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Actualizar" 
+                                       icon="pi pi-check"
+                                       action="#{requerimientoBean.update}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/requerimientos/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

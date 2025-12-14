@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Editar Unidad</ui:define>
+        <ui:define name="pageTitle">Editar Unidad de Medida</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .form-card {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background: white;
+                    border-radius: 15px;
+                    padding: 35px;
+                    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+                    animation: slideUp 0.4s ease-out;
+                }
+
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .form-header {
+                    text-align: center;
+                    margin-bottom: 35px;
+                    padding-bottom: 20px;
+                    border-bottom: 3px solid #11998e;
+                }
+
+                .form-header h2 {
+                    color: #2c3e50;
+                    font-size: 2em;
+                    margin-bottom: 10px;
+                }
+
+                .form-header p {
+                    color: #7f8c8d;
+                }
+
+                .form-group {
+                    margin-bottom: 25px;
+                }
+
+                .form-group label {
+                    display: block;
+                    color: #2c3e50;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                    font-size: 1.05em;
+                }
+
+                .ui-inputfield, .ui-inputtextarea {
+                    width: 100% !important;
+                    padding: 15px !important;
+                    border: 2px solid #e0e0e0 !important;
+                    border-radius: 10px !important;
+                    font-size: 1em !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .ui-inputfield:focus, .ui-inputtextarea:focus {
+                    border-color: #11998e !important;
+                    box-shadow: 0 0 0 4px rgba(17, 153, 142, 0.1) !important;
+                    outline: none !important;
+                }
+
+                .button-group {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    margin-top: 35px;
+                    padding-top: 25px;
+                    border-top: 2px solid #f0f0f0;
+                }
+
+                .btn-update {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+                    border: none !important;
+                    padding: 15px 40px !important;
+                    border-radius: 10px !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    font-size: 1.1em !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-update:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4) !important;
+                }
+
+                .btn-cancel {
+                    background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%) !important;
+                    border: none !important;
+                    padding: 15px 40px !important;
+                    border-radius: 10px !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    font-size: 1.1em !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-cancel:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 20px rgba(127, 140, 141, 0.4) !important;
+                }
+
+                .required-mark {
+                    color: #e74c3c;
+                    margin-left: 3px;
+                }
+
+                .info-box {
+                    background: #e8f4fd;
+                    border-left: 4px solid #3498db;
+                    padding: 15px;
+                    border-radius: 8px;
+                    margin-bottom: 25px;
+                }
+
+                .info-box i {
+                    color: #3498db;
+                    margin-right: 10px;
+                }
+            </style>
+
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-pencil"></i> Editar Unidad de Medida</h2>
+                    <p>Modifique los datos de la unidad</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+
+                    <div class="info-box">
+                        <i class="pi pi-info-circle"></i>
+                        <strong>ID:</strong> #{unidadBean.unidad.id}
+                    </div>
+
+                    <h:inputHidden value="#{unidadBean.unidad.id}" />
+
+                    <div class="form-group">
+                        <label for="abreviatura">
+                            Abreviatura <span class="required-mark">*</span>
+                        </label>
+                        <p:inputText id="abreviatura" 
+                                   value="#{unidadBean.unidad.abreviatura}" 
+                                   placeholder="Ej: KG, M, L, UN"
+                                   required="true"
+                                   requiredMessage="La abreviatura es requerida"
+                                   maxlength="10"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">
+                            Descripción <span class="required-mark">*</span>
+                        </label>
+                        <p:inputTextarea id="descripcion" 
+                                       value="#{unidadBean.unidad.descripcion}" 
+                                       placeholder="Descripción detallada de la unidad"
+                                       rows="4"
+                                       required="true"
+                                       requiredMessage="La descripción es requerida"
+                                       maxlength="255"/>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Actualizar" 
+                                       icon="pi pi-check"
+                                       action="#{unidadBean.update}" 
+                                       styleClass="btn-update"
+                                       update="messages"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/unidades/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

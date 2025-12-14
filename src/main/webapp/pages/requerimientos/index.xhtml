@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Requerimientos</ui:define>
+        <ui:define name="pageTitle">Gestión de Requerimientos</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .estado-pendiente {
+                    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+                    color: white;
+                }
+                .estado-aprobado {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                    color: white;
+                }
+                .estado-rechazado {
+                    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                    color: white;
+                }
+                .estado-cancelado {
+                    background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+                    color: white;
+                }
+            </style>
+
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-file-edit"></i> Requerimientos de Compra</h3>
+                    <p:commandButton value="Nuevo Requerimiento" 
+                                   icon="pi pi-plus"
+                                   action="#{requerimientoBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{requerimientoBean.getAll()}" 
+                               var="r" 
+                               rows="10"
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                               emptyMessage="No hay requerimientos registrados">
+
+                        <p:column headerText="Código" style="width: 120px">
+                            <h:outputText value="#{r.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha Solicitud" style="width: 130px; text-align: center">
+                            <h:outputText value="#{r.fechaSolicitud}">
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Solicitante" style="width: 180px">
+                            <h:outputText value="#{r.solicitante.nombres} #{r.solicitante.apellidos}"/>
+                        </p:column>
+
+                        <p:column headerText="Proyecto" style="width: 150px">
+                            <h:outputText value="#{r.proyecto.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Área" style="width: 150px">
+                            <h:outputText value="#{r.area.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 120px; text-align: center">
+                            <span class="estado-badge estado-#{r.estado.toString().toLowerCase()}">
+                                #{r.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 220px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{requerimientoBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar"
+                                               rendered="#{r.estado == 'Pendiente'}">
+                                    <f:setPropertyActionListener value="#{r.id}" target="#{requerimientoBean.requerimiento.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-check-circle" 
+                                               action="#{requerimientoBean.verAprobar}"  
+                                               styleClass="btn-view"
+                                               title="Aprobar"
+                                               rendered="#{r.estado == 'Pendiente'}">
+                                    <f:setPropertyActionListener value="#{r.id}" target="#{requerimientoBean.requerimiento.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{requerimientoBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{r.id}" target="#{requerimientoBean.requerimiento.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{requerimientoBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Cancelar"
+                                               rendered="#{r.estado == 'Pendiente'}"
+                                               onclick="return confirm('¿Está seguro de cancelar este requerimiento?')">
+                                    <f:setPropertyActionListener value="#{r.id}" target="#{requerimientoBean.requerimiento.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

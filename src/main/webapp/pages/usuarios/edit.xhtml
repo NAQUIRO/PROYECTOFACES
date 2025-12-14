@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Editar Usuario</ui:define>
+        <ui:define name="pageTitle">Editar Usuario</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-pencil"></i> Editar Usuario</h2>
+                    <p>Modifique la información del usuario</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="username">Usuario <span class="required-mark">*</span></label>
+                        <p:inputText id="username" 
+                                   value="#{usuarioBean.usuario.username}" 
+                                   placeholder="Nombre de usuario"
+                                   required="true"
+                                   disabled="true"
+                                   maxlength="50"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Nueva Contraseña (dejar vacío para no cambiar)</label>
+                        <p:password id="password" 
+                                  value="#{usuarioBean.usuario.password}" 
+                                  placeholder="Nueva contraseña"
+                                  feedback="true"
+                                  maxlength="255"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmar">Confirmar Contraseña</label>
+                        <p:password id="confirmar" 
+                                  value="#{usuarioBean.confirmarPassword}" 
+                                  placeholder="Confirme la contraseña"
+                                  feedback="false"
+                                  maxlength="255"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombres">Nombres <span class="required-mark">*</span></label>
+                        <p:inputText id="nombres" 
+                                   value="#{usuarioBean.usuario.nombres}" 
+                                   placeholder="Nombres del usuario"
+                                   required="true"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos <span class="required-mark">*</span></label>
+                        <p:inputText id="apellidos" 
+                                   value="#{usuarioBean.usuario.apellidos}" 
+                                   placeholder="Apellidos del usuario"
+                                   required="true"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico</label>
+                        <p:inputText id="correo" 
+                                   value="#{usuarioBean.usuario.correo}" 
+                                   placeholder="correo@ejemplo.com"
+                                   maxlength="100"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <p:inputText id="telefono" 
+                                   value="#{usuarioBean.usuario.telefono}" 
+                                   placeholder="Número de teléfono"
+                                   maxlength="20"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rol">Rol <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="rol" 
+                                       value="#{usuarioBean.rolId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un rol" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{usuarioBean.allRoles}" 
+                                         var="r" 
+                                         itemLabel="#{r.nombre}" 
+                                         itemValue="#{r.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Área</label>
+                        <p:selectOneMenu id="area" 
+                                       value="#{usuarioBean.areaId}">
+                            <f:selectItem itemLabel="Seleccione un área" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{usuarioBean.allAreas}" 
+                                         var="a" 
+                                         itemLabel="#{a.nombre}" 
+                                         itemValue="#{a.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Actualizar" 
+                                       icon="pi pi-check"
+                                       action="#{usuarioBean.update}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/usuarios/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

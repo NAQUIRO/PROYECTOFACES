@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Áreas</ui:define>
+        <ui:define name="pageTitle">Gestión de Áreas</ui:define>
+
+        <ui:define name="content">
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-building"></i> Áreas de la Empresa</h3>
+                    <p:commandButton value="Nueva Área" 
+                                   icon="pi pi-plus"
+                                   action="#{areaBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{areaBean.getAll()}" 
+                               var="a" 
+                               rows="10"
+                               paginator="true"
+                               emptyMessage="No hay áreas registradas">
+
+                        <p:column headerText="Código" style="width: 100px">
+                            <h:outputText value="#{a.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{a.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Centro de Costo" style="width: 200px">
+                            <h:outputText value="#{a.centroCosto.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 100px; text-align: center">
+                            <span class="estado-badge #{a.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{a.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{areaBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{a.id}" target="#{areaBean.area.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{areaBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{a.id}" target="#{areaBean.area.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{areaBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Está seguro de eliminar esta área?')">
+                                    <f:setPropertyActionListener value="#{a.id}" target="#{areaBean.area.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

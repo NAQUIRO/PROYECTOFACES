@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Proyectos</ui:define>
+        <ui:define name="pageTitle">Gestión de Proyectos</ui:define>
+
+        <ui:define name="content">
+            <h:form>
+                <div class="action-header">
+                    <h3><i class="pi pi-briefcase"></i> Proyectos</h3>
+                    <p:commandButton value="Nuevo Proyecto" 
+                                   icon="pi pi-plus"
+                                   action="#{proyectoBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable value="#{proyectoBean.getAll()}" 
+                               var="p" 
+                               rows="10"
+                               paginator="true"
+                               emptyMessage="No hay proyectos registrados">
+
+                        <p:column headerText="Código" style="width: 100px">
+                            <h:outputText value="#{p.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{p.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Área" style="width: 150px">
+                            <h:outputText value="#{p.area.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha Inicio" style="width: 110px; text-align: center">
+                            <h:outputText value="#{p.fechaInicio}">
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Fin" style="width: 110px; text-align: center">
+                            <h:outputText value="#{p.fechaFin}">
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 100px; text-align: center">
+                            <span class="estado-badge #{p.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{p.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px; text-align: center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{proyectoBean.edit}"  
+                                               styleClass="btn-edit"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proyectoBean.proyecto.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{proyectoBean.show}"  
+                                               styleClass="btn-view"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proyectoBean.proyecto.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{proyectoBean.erase}" 
+                                               styleClass="btn-delete"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Está seguro de eliminar este proyecto?')">
+                                    <f:setPropertyActionListener value="#{p.id}" target="#{proyectoBean.proyecto.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

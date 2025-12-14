@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Unidades de Medida</ui:define>
+        <ui:define name="pageTitle">Unidades de Medida</ui:define>
+
+        <ui:define name="content">
+            <style>
+                .action-header {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 15px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                    margin-bottom: 25px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .action-header h3 {
+                    color: #2c3e50;
+                    font-size: 1.3em;
+                    margin: 0;
+                }
+
+                .btn-nuevo {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    border: none !important;
+                    padding: 12px 25px !important;
+                    border-radius: 10px !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-nuevo:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4) !important;
+                }
+
+                .table-container {
+                    background: white;
+                    padding: 25px;
+                    border-radius: 15px;
+                    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+                }
+
+                .ui-datatable {
+                    border: none !important;
+                }
+
+                .ui-datatable thead th {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    padding: 18px 15px !important;
+                    border: none !important;
+                    text-align: center !important;
+                }
+
+                .ui-datatable tbody td {
+                    padding: 15px !important;
+                    border-bottom: 1px solid #f0f0f0 !important;
+                    vertical-align: middle !important;
+                    text-align: center !important;
+                }
+
+                .ui-datatable tbody tr {
+                    transition: all 0.3s ease;
+                }
+
+                .ui-datatable tbody tr:hover {
+                    background: #f8f9fa !important;
+                    transform: scale(1.01);
+                }
+
+                .action-buttons {
+                    display: flex;
+                    gap: 8px;
+                    justify-content: center;
+                }
+
+                .btn-edit {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+                    border: none !important;
+                    padding: 8px 12px !important;
+                    border-radius: 8px !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-edit:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4) !important;
+                }
+
+                .btn-delete {
+                    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%) !important;
+                    border: none !important;
+                    padding: 8px 12px !important;
+                    border-radius: 8px !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-delete:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(235, 51, 73, 0.4) !important;
+                }
+
+                .btn-view {
+                    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+                    border: none !important;
+                    padding: 8px 12px !important;
+                    border-radius: 8px !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .btn-view:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4) !important;
+                }
+
+                .estado-badge {
+                    padding: 6px 15px;
+                    border-radius: 20px;
+                    font-size: 0.85em;
+                    font-weight: 600;
+                    display: inline-block;
+                }
+
+                .estado-activo {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                    color: white;
+                }
+
+                .estado-baja {
+                    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                    color: white;
+                }
+
+                .ui-paginator {
+                    background: transparent !important;
+                    border: none !important;
+                    padding: 20px 0 !important;
+                }
+
+                .ui-paginator .ui-paginator-page {
+                    border-radius: 8px !important;
+                    margin: 0 3px !important;
+                }
+
+                .ui-paginator .ui-paginator-page.ui-state-active {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                    border: none !important;
+                    color: white !important;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .action-header, .table-container {
+                    animation: fadeIn 0.5s ease-out;
+                }
+            </style>
+
+            <h:form>
+                <p:growl id="messages" showDetail="true" life="3000"/>
+
+                <div class="action-header">
+                    <h3>
+                        <i class="pi pi-calculator"></i> Gestión de Unidades de Medida
+                    </h3>
+                    <p:commandButton value="Nueva Unidad" 
+                                   icon="pi pi-plus"
+                                   action="#{unidadBean.add}" 
+                                   styleClass="btn-nuevo"/>
+                </div>
+
+                <div class="table-container">
+                    <p:dataTable widgetVar="unidadTable" 
+                               var="u" 
+                               value="#{unidadBean.getAll()}" 
+                               rows="10"
+                               rowKey="#{u.id}" 
+                               lazy="false" 
+                               paginator="true"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords} registros"
+                               rowsPerPageTemplate="5,10,15,20,30" 
+                               paginatorPosition="bottom"
+                               emptyMessage="No hay unidades registradas">
+
+                        <p:column headerText="Código" style="width: 100px">
+                            <h:outputText value="#{u.id}" style="font-weight: 600"/>
+                        </p:column>
+
+                        <p:column headerText="Abreviatura" style="width: 150px">
+                            <h:outputText value="#{u.abreviatura}" style="font-weight: 500; color: #667eea"/>
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{u.descripcion}"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 120px">
+                            <span class="estado-badge #{u.estado == 'Activo' ? 'estado-activo' : 'estado-baja'}">
+                                #{u.estado}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" style="width: 180px">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-pencil" 
+                                               action="#{unidadBean.edit}"  
+                                               styleClass="btn-edit" 
+                                               process="@this"
+                                               title="Editar">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{unidadBean.unidad.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-eye" 
+                                               action="#{unidadBean.show}"  
+                                               styleClass="btn-view" 
+                                               process="@this"
+                                               title="Ver">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{unidadBean.unidad.id}"/>
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" 
+                                               action="#{unidadBean.erase}" 
+                                               styleClass="btn-delete" 
+                                               process="@this"
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Está seguro de eliminar esta unidad?')">
+                                    <f:setPropertyActionListener value="#{u.id}" target="#{unidadBean.unidad.id}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

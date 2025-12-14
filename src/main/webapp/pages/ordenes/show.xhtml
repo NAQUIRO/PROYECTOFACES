@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="title">Editar Orden de Compra</ui:define>
+        <ui:define name="pageTitle">Editar Orden de Compra</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2><i class="pi pi-pencil"></i> Editar Orden de Compra</h2>
+                    <p>Modifique los datos de la orden de compra</p>
+                </div>
+
+                <h:form id="form">
+                    <p:messages showDetail="true" closable="true"/>
+
+                    <div class="form-group">
+                        <label for="codigo">Código <span class="required-mark">*</span></label>
+                        <p:inputText id="codigo" 
+                                   value="#{ordenCompraBean.ordenCompra.codigo}" 
+                                   placeholder="Código de la orden"
+                                   required="true"
+                                   maxlength="20"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proveedor">Proveedor <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="proveedor" 
+                                       value="#{ordenCompraBean.proveedorId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un proveedor" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{ordenCompraBean.allProveedores}" 
+                                         var="p" 
+                                         itemLabel="#{p.nombre}" 
+                                         itemValue="#{p.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="solicitante">Solicitante <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="solicitante" 
+                                       value="#{ordenCompraBean.solicitanteId}"
+                                       required="true">
+                            <f:selectItem itemLabel="Seleccione un solicitante" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{ordenCompraBean.allUsuarios}" 
+                                         var="u" 
+                                         itemLabel="#{u.nombres} #{u.apellidos}" 
+                                         itemValue="#{u.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="moneda">Moneda <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="moneda" 
+                                       value="#{ordenCompraBean.ordenCompra.moneda}"
+                                       required="true">
+                            <f:selectItem itemLabel="Soles (PEN)" itemValue="PEN"/>
+                            <f:selectItem itemLabel="Dólares (USD)" itemValue="USD"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formaPago">Forma de Pago <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="formaPago" 
+                                       value="#{ordenCompraBean.ordenCompra.formaPago}"
+                                       required="true">
+                            <f:selectItem itemLabel="Transferencia" itemValue="Transferencia"/>
+                            <f:selectItem itemLabel="Cheque" itemValue="Cheque"/>
+                            <f:selectItem itemLabel="Efectivo" itemValue="Efectivo"/>
+                            <f:selectItem itemLabel="Pagaré" itemValue="Pagare"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="condicionPago">Condición de Pago <span class="required-mark">*</span></label>
+                        <p:selectOneMenu id="condicionPago" 
+                                       value="#{ordenCompraBean.ordenCompra.condicionPago}"
+                                       required="true">
+                            <f:selectItem itemLabel="Contado" itemValue="Contado"/>
+                            <f:selectItem itemLabel="Contra Entrega" itemValue="ContraEntrega"/>
+                            <f:selectItem itemLabel="Factura" itemValue="Factura"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lugarEntrega">Lugar de Entrega</label>
+                        <p:inputText id="lugarEntrega" 
+                                   value="#{ordenCompraBean.ordenCompra.lugarEntrega}" 
+                                   placeholder="Dirección de entrega"
+                                   maxlength="255"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaEntrega">Fecha de Entrega</label>
+                        <p:datePicker id="fechaEntrega" 
+                                    value="#{ordenCompraBean.ordenCompra.fechaEntrega}"
+                                    pattern="dd/MM/yyyy"
+                                    showIcon="true"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <p:inputTextarea id="observaciones" 
+                                       value="#{ordenCompraBean.ordenCompra.observaciones}"
+                                       rows="3"
+                                       maxlength="255"/>
+                    </div>
+
+                    <!-- Sección de Detalles -->
+                    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;">
+                            <i class="pi pi-list"></i> Ítems de la Orden
+                        </h3>
+
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 15px;">Agregar Ítem</h4>
+                            
+                            <div class="form-group">
+                                <label for="material">Material <span class="required-mark">*</span></label>
+                                <p:selectOneMenu id="material" value="#{ordenCompraBean.materialId}">
+                                    <f:selectItem itemLabel="Seleccione un material" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{ordenCompraBean.allMateriales}" 
+                                                 var="m" 
+                                                 itemLabel="#{m.nombre}" 
+                                                 itemValue="#{m.id}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="unidad">Unidad <span class="required-mark">*</span></label>
+                                <p:selectOneMenu id="unidad" value="#{ordenCompraBean.unidadId}">
+                                    <f:selectItem itemLabel="Seleccione una unidad" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{ordenCompraBean.allUnidades}" 
+                                                 var="u" 
+                                                 itemLabel="#{u.abreviatura} - #{u.descripcion}" 
+                                                 itemValue="#{u.id}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad <span class="required-mark">*</span></label>
+                                <p:inputNumber id="cantidad" 
+                                             value="#{ordenCompraBean.detalleTemp.cantidad}"
+                                             decimalPlaces="2"
+                                             minValue="0.01"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="precioUnitario">Precio Unitario <span class="required-mark">*</span></label>
+                                <p:inputNumber id="precioUnitario" 
+                                             value="#{ordenCompraBean.detalleTemp.precioUnitario}"
+                                             decimalPlaces="2"
+                                             minValue="0.01"/>
+                            </div>
+
+                            <p:commandButton value="Agregar Ítem" 
+                                           icon="pi pi-plus"
+                                           action="#{ordenCompraBean.agregarDetalle}"
+                                           update="form"
+                                           styleClass="btn-save"
+                                           style="width: auto; margin-top: 10px;"/>
+                        </div>
+
+                        <!-- Tabla de detalles -->
+                        <p:dataTable value="#{ordenCompraBean.detalles}" 
+                                   var="d"
+                                   emptyMessage="No hay ítems agregados">
+                            
+                            <p:column headerText="Material">
+                                <h:outputText value="#{d.material.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad" style="width: 100px; text-align: center">
+                                <h:outputText value="#{d.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad" style="width: 80px; text-align: center">
+                                <h:outputText value="#{d.unidad.abreviatura}"/>
+                            </p:column>
+
+                            <p:column headerText="P. Unitario" style="width: 120px; text-align: right">
+                                <h:outputText value="#{d.precioUnitario}">
+                                    <f:convertNumber type="currency" currencySymbol="S/ "/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Subtotal" style="width: 120px; text-align: right">
+                                <h:outputText value="#{d.subtotal}">
+                                    <f:convertNumber type="currency" currencySymbol="S/ "/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Acción" style="width: 100px; text-align: center">
+                                <p:commandButton icon="pi pi-trash"
+                                               action="#{ordenCompraBean.eliminarDetalle(d)}"
+                                               update="form"
+                                               styleClass="btn-delete"
+                                               title="Eliminar"/>
+                            </p:column>
+                        </p:dataTable>
+
+                        <!-- Totales -->
+                        <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
+                            <div style="text-align: right;">
+                                <div style="margin-bottom: 10px; font-size: 1.1em;">
+                                    <strong>Subtotal:</strong>
+                                    <h:outputText value="#{ordenCompraBean.ordenCompra.subtotal}" style="margin-left: 20px;">
+                                        <f:convertNumber type="currency" currencySymbol="S/ "/>
+                                    </h:outputText>
+                                </div>
+                                <div style="margin-bottom: 10px; font-size: 1.1em;">
+                                    <strong>IGV (18%):</strong>
+                                    <h:outputText value="#{ordenCompraBean.ordenCompra.igv}" style="margin-left: 20px;">
+                                        <f:convertNumber type="currency" currencySymbol="S/ "/>
+                                    </h:outputText>
+                                </div>
+                                <div style="font-size: 1.3em; color: #2c3e50; padding-top: 10px; border-top: 2px solid #e0e0e0;">
+                                    <strong>TOTAL:</strong>
+                                    <h:outputText value="#{ordenCompraBean.ordenCompra.total}" style="margin-left: 20px; color: #667eea;">
+                                        <f:convertNumber type="currency" currencySymbol="S/ "/>
+                                    </h:outputText>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <p:commandButton value="Actualizar" 
+                                       icon="pi pi-check"
+                                       action="#{ordenCompraBean.update}" 
+                                       styleClass="btn-save"/>
+                        
+                        <p:commandButton value="Cancelar" 
+                                       icon="pi pi-times"
+                                       action="/pages/ordenes/index?faces-redirect=true"
+                                       styleClass="btn-cancel"
+                                       immediate="true"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
