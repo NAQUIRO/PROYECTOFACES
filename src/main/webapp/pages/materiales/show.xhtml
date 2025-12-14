@@ -100,7 +100,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             <div class="detail-label">Fecha de Creación</div>
                             <div class="detail-value">
                                 <h:outputText value="#{materialBean.material.fechaCreacion}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                                 </h:outputText>
                             </div>
                         </div>

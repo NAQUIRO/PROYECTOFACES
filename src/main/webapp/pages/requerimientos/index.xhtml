@@ -57,7 +57,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <p:column headerText="Fecha Solicitud" style="width: 130px; text-align: center">
                             <h:outputText value="#{r.fechaSolicitud}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                             </h:outputText>
                         </p:column>
 

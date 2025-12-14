@@ -45,13 +45,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <p:column headerText="Fecha Inicio" style="width: 110px; text-align: center">
                             <h:outputText value="#{p.fechaInicio}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="Fecha Fin" style="width: 110px; text-align: center">
                             <h:outputText value="#{p.fechaFin}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                             </h:outputText>
                         </p:column>
 

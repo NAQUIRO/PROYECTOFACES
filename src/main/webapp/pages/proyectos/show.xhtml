@@ -43,7 +43,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <div class="detail-label">Fecha Inicio:</div>
                     <div class="detail-value">
                         <h:outputText value="#{proyectoBean.proyecto.fechaInicio}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                            <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
                         </h:outputText>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <div class="detail-label">Fecha Fin:</div>
                     <div class="detail-value">
                         <h:outputText value="#{proyectoBean.proyecto.fechaFin}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                            <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
                         </h:outputText>
                     </div>
                 </div>

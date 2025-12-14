@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <p:column headerText="Fecha" style="width: 110px; text-align: center">
                             <h:outputText value="#{o.fecha}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                             </h:outputText>
                         </p:column>
 

@@ -51,7 +51,7 @@
 
                         <p:column headerText="Fecha Creación" style="width: 130px; text-align: center">
                             <h:outputText value="#{m.fechaCreacion}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                             </h:outputText>
                         </p:column>
 
